@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "owynrichen-com"
+version = "0.1.0"
+description = ""
+authors = ["Owyn Richen"]
+readme = "README.md"
+packages = [{include = "owynrichen"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pelican = {extras = ["markdown"], version = "^4.10.2"}
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
