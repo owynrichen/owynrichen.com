@@ -6,6 +6,7 @@ authors = ["Owyn Richen"]
 readme = "README.md"
 packages = [{include = "owynrichen"}]
 
+
 [tool.poetry.dependencies]
 python = "^3.11"
 pelican = {extras = ["markdown"], version = "^4.10.2"}
