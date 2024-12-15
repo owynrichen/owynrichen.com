@@ -1,7 +1,7 @@
 name = "owyn-worker"
-main = "owynrichen/src/fun_worker.py"
+main = "src/fun_worker.py"
 compatibility_flags = ["python_workers"]
 compatibility_date = "2024-03-20"
 
 [vars]
-API_HOST = "owynrichen.com"
+API_HOST = "api.owynrichen.com"
