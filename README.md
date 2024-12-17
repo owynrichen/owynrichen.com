@@ -27,6 +27,7 @@ is updated.
 ## Earth
 
 Textures taken from: https://planetpixelemporium.com/earth8081.html
+https://github.com/matteason/live-cloud-maps?tab=readme-ov-file
 Put together quickly in Blender 4.3.1
 
 # Deploy Workers

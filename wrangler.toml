@@ -5,3 +5,10 @@ compatibility_date = "2024-03-20"
 
 [vars]
 API_HOST = "api.owynrichen.com"
+
+[[kv_namespaces]]
+binding = "OPENSKY"
+id = "efb6789606d44253bd68d847daabf114"
+
+[observability.logs]
+enabled = true
