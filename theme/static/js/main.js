@@ -130,8 +130,8 @@ function addPlaneFromObject3D(plane, planemesh) {
 }
 
 console.log("fetching planes...")
-fetch("http://127.0.0.1:8787/").then((response) => {
-// fetch("https://api.owynrichen.com/").then((response) => {
+// fetch("http://127.0.0.1:8787/").then((response) => {
+fetch("https://api.owynrichen.com/").then((response) => {
     const resp_jsonP = response.json()
     resp_jsonP.then((resp_json) => {
         const p = resp_json["planes"];
