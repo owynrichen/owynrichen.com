@@ -2,9 +2,9 @@ import * as THREE from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import * as BufferGeometryUtils from 'three/addons/utils/BufferGeometryUtils.js';
-import Starfield from './Starfield.js';
-import Earth from './Earth.js';
-import Sun from './Sun.js';
+import { Starfield } from './Starfield.js';
+import { Earth } from './Earth.js';
+import { Sun } from './Sun.js';
 
 function resizeRendererToDisplaySize(renderer) {
     const canvas = renderer.domElement;
@@ -36,7 +36,12 @@ camera.rotation.set(-1.7502224774749415, -1.257885472271306, -1.7591697371977346
 // scene.add( axesHelper );
 
 const renderer = new THREE.WebGLRenderer( { alpha: true, antialias: true, canvas } );
+// renderer.shadowMap.enabled = true;
+// renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.setAnimationLoop( animate );
+
+// const pmremGenerator = new THREE.PMREMGenerator(renderer);
+// pmremGenerator.compileEquirectangularShader();
 
 const controls = new OrbitControls(camera, canvas);
 controls.target.set(0, 0, 0);
@@ -71,6 +76,10 @@ const planeGroup = new THREE.Group();
 planeGroup.name = "planes";
 earth.add(planeGroup);
 
+
+// const helper = new THREE.CameraHelper( sun.pointLight.shadow.camera );
+// scene.add( helper );
+
 const planes = {};
 
 
@@ -83,11 +92,6 @@ function latLongToVector3(latitude, longitude, radius, height) {
     var z = (radius+height) * Math.cos(phi) * Math.sin(theta);
 
     return new THREE.Vector3(x,y,z);
-}
-
-function addPlane(plane, planegeo, planemat) {
-    const planemesh = new THREE.InstancedMesh(planegeo, planemat);
-    return addPlaneFromObject3D(planemesh);
 }
 
 function addPlaneFromObject3D(plane, planemesh) {
@@ -140,25 +144,10 @@ fetch("https://api.owynrichen.com/").then((response) => {
         gltfLoader.load('/theme/3d/low_poly_jet2/scene.gltf', (gltf) => {
             const planeObjectScene = gltf.scene;
             const meshes = planeObjectScene.getObjectsByProperty("isMesh", true);
-            // const geometries = []
-            // meshes.forEach(mesh => {
-            //     mesh.updateMatrixWorld(true);
 
-            //     const geo = mesh.geometry.clone();
-            //     geo.applyMatrix4(mesh.matrixWorld);
-            //     geometries.push(geo);
-            // });
-            // const geometry = BufferGeometryUtils.mergeGeometries(geometries);
-            // planeObject3D.scale.multiplyScalar(0.0001);
-            // const planegeo = new THREE.ConeGeometry( 0.001, 0.002, 8 ); 
-            // planegeo.rotateX(90 * Math.PI / 180); // rotate cone to point to Z axis
-            const planemat = new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0xffffff, emissiveIntensity: 0.4 });
+            const planemat = new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0x770033, emissiveIntensity: 0.4 });
             const n563vwmat = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-            // const planeObject3D = new THREE.InstancedMesh(geometry, planemat, p.length);
-            // const planeObject3D = meshes[0];
-            // planeObject3D.material = planemat;
-            // planeObject3D.geometry.rotateX(90 * Math.PI/180);
-            // planeObject3D.geometry.rotateY(90 * Math.PI / 180);
+
             const planeObject3D = meshes[0];
             planeObject3D.material = planemat;
 
@@ -170,17 +159,23 @@ fetch("https://api.owynrichen.com/").then((response) => {
     
             for(var i = 0; i < p.length; i++) {
                 const plane = p[i];
+                const newPlane = planeObject3D.clone();
+
                 if (plane["tail"] == "N563VW") {
                     n563vw_flying = true;
-                    addPlaneFromObject3D(plane, planeObject3D.clone());
-                } else {
-                    addPlaneFromObject3D(plane, planeObject3D.clone());
+                    newPlane.material = n563vwmat;
+                    newPlane.scale.multiplyScalar(3);
                 }
+
+                addPlaneFromObject3D(plane, newPlane);
             }
     
             if (!n563vw_flying) {
                 console.log("n563vw on the ground");
-                addPlaneFromObject3D(n563vw_grounded, planeObject3D.clone());
+                const newPlane = planeObject3D.clone();
+                newPlane.material = n563vwmat;
+                newPlane.scale.multiplyScalar(3);
+                addPlaneFromObject3D(n563vw_grounded, newPlane);
             }
     
             planes["N563VW"]["mesh"].scale.multiplyScalar(2);
@@ -209,7 +204,7 @@ function animate( time ) {
     const earth = scene.getObjectByName("earth");
 
     if (earth != null) {
-        // earth.rotation.y += (delta * rotationSpeed);
+        earth.rotationStep(delta);
     }
 
     for(const [key, data] of Object.entries(planes)) {

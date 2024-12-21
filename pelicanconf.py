@@ -1,5 +1,5 @@
 AUTHOR = 'Owyn Richen'
-SITENAME = "Owyn Richen's vanity site"
+SITENAME = "OWYN'S MUSINGS"
 SITEURL = ""
 
 PATH = "content"

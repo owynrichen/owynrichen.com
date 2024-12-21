@@ -36,6 +36,9 @@
       {% if TAG_FEED_RSS and tag %}
         <link href="{{ FEED_DOMAIN }}/{% if TAG_FEED_RSS_URL %}{{ TAG_FEED_RSS_URL.format(slug=tag.slug) }}{% else %}{{ TAG_FEED_RSS.format(slug=tag.slug) }}{% endif %}" type="application/rss+xml" rel="alternate" title="{{ SITENAME|striptags }} Tags RSS Feed" />
       {% endif %}
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Covered+By+Your+Grace&display=swap" rel="stylesheet">
       <link rel="stylesheet" type="text/css" href="{{ SITEURL }}/theme/css/style.css" />
     {% endblock head %}
   </head>
@@ -70,11 +73,13 @@
       </address>
     </footer>
     <canvas id="c"></canvas>
+    <div id="bg"></div>
     <script type="importmap">
       {
          "imports": {
             "three": "https://unpkg.com/three@0.171.0/build/three.module.js",
-            "three/addons/": "https://unpkg.com/three@0.171.0/examples/jsm/"
+            "three/addons/": "https://unpkg.com/three@0.171.0/examples/jsm/",
+            "gsap": "https://unpkg.com/gsap@3.12.5/dist/gsap.js"
          }
       }
    </script>

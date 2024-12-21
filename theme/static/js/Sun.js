@@ -1,29 +1,37 @@
 import * as THREE from 'three';
 import { Lensflare, LensflareElement } from 'three/addons/objects/Lensflare.js';
 
-export default function Sun(
-    { position = new THREE.Vector3(10,0,0) } = {}
-) {
-    const loader = new THREE.TextureLoader();
-    const sun = new THREE.Group();
+class Sun extends THREE.Group {
+    constructor(position = new THREE.Vector3(10,0,0)) {
+        super();
 
-    const light = new THREE.AmbientLight( 0x404040 , 0.4); // soft white light
-    sun.add( light );
+        const loader = new THREE.TextureLoader();
 
-    const pointLight = new THREE.PointLight( 0xffffff, 3, 0, 0.25);
-    pointLight.position.copy(position);
-    pointLight.castShadow = true;
-    sun.add(pointLight);
+        const light = new THREE.AmbientLight( 0x404040 , 0.4); // soft white light
+        this.add( light );
 
-    const textureFlare0 = loader.load( "/theme/3d/flare1.png" );
-    const textureFlare1 = loader.load( "/theme/3d/flare2.png" );
+        const pointLight = new THREE.PointLight( 0xffffff, 3, 0, 0.25);
+        pointLight.position.copy(position);
+        pointLight.castShadow = true;
 
-    const lensflare = new Lensflare();
+        pointLight.shadow.mapSize.width = 512; // default
+        pointLight.shadow.mapSize.height = 512; // default
+        pointLight.shadow.camera.near = 1; // default
+        pointLight.shadow.camera.far = 100; // default
+        this.add(pointLight);
 
-    lensflare.addElement( new LensflareElement( textureFlare0, 1024, 0 ) );
-    lensflare.addElement( new LensflareElement( textureFlare1, 1024, 0 ) );
+        const textureFlare0 = loader.load( "/theme/3d/flare1.png" );
+        const textureFlare1 = loader.load( "/theme/3d/flare2.png" );
 
-    pointLight.add( lensflare );
+        const lensflare = new Lensflare();
 
-    return sun;
+        lensflare.addElement( new LensflareElement( textureFlare0, 1024, 0 ) );
+        lensflare.addElement( new LensflareElement( textureFlare1, 1024, 0 ) );
+
+        pointLight.add( lensflare );
+
+        this.pointLight = pointLight;
+    }
 }
+
+export { Sun };
