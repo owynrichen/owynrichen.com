@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { gsap } from 'gsap';
 
 class Starfield extends THREE.Group {
     constructor(radius = 6371) {
@@ -6,7 +7,7 @@ class Starfield extends THREE.Group {
 
         // TODO: I ported this from somewhere, add where in this comment...
         //
-        const starsGeometry = [ new THREE.BufferGeometry(), new THREE.BufferGeometry() ];
+        this.starsGeometry = [ new THREE.BufferGeometry(), new THREE.BufferGeometry() ];
 
         const vertices1 = [];
         const vertices2 = [];
@@ -35,18 +36,19 @@ class Starfield extends THREE.Group {
 
         }
 
-        starsGeometry[ 0 ].setAttribute( 'position', new THREE.Float32BufferAttribute( vertices1, 3 ) );
-        starsGeometry[ 1 ].setAttribute( 'position', new THREE.Float32BufferAttribute( vertices2, 3 ) );
+        this.starsGeometry[ 0 ].setAttribute( 'position', new THREE.Float32BufferAttribute( vertices1, 3 ) );
+        this.starsGeometry[ 1 ].setAttribute( 'position', new THREE.Float32BufferAttribute( vertices2, 3 ) );
 
-        const starsMaterials = [
-            new THREE.PointsMaterial( { color: 0x9c9c9c } ),
-            new THREE.PointsMaterial( { color: 0x838383 } ),
-            new THREE.PointsMaterial( { color: 0x5a5a5a } )
+        this.starsMaterials = [
+            new THREE.PointsMaterial( { color: 0x9c9c9c, transparent: true, opacity: 0 } ),
+            new THREE.PointsMaterial( { color: 0x838383, transparent: true, opacity: 0 } ),
+            new THREE.PointsMaterial( { color: 0x5a5a5a, transparent: true, opacity: 0 } )
         ];
 
         for ( let i = 10; i < 30; i ++ ) {
 
-            const stars = new THREE.Points( starsGeometry[ i % 2 ], starsMaterials[ i % 3 ] );
+            const stars = new THREE.Points( this.starsGeometry[ i % 2 ], this.starsMaterials[ i % 3 ] );
+            stars.name = `${i}`;
 
             stars.rotation.x = Math.random() * 6;
             stars.rotation.y = Math.random() * 6;
@@ -59,10 +61,30 @@ class Starfield extends THREE.Group {
             this.add( stars );
 
         }
+
+        gsap.to(this.starsMaterials[0], {opacity: 1, duration: 5});
+        gsap.to(this.starsMaterials[1], {opacity: 1, duration: 5});
+        gsap.to(this.starsMaterials[2], {opacity: 1, duration: 5});
+    }
+
+    updateStarBrightness(star, delta) {
+        const time = Date.now() * 0.0005;
+        let hsl = {};
+        star.material.color.getHSL(hsl);
+        const h = hsl.h;
+        const s = hsl.s;
+        const l = 0.8 + 0.2 * Math.sin(time + star.position.x + star.position.y); // Lightness oscillates between 0.6 and 1.0
+        star.material.color.setHSL(h, s, l);
+    }
+
+    resetStarBrightness(star) {
+        star.material.color = this.starsMaterials[parseInt(star.name) % 3].color;
     }
 
     twinkleStep(delta) {
-        // TODO: make the stars twinkle
+        this.children.forEach(star => {
+//            this.updateStarBrightness(star, delta);
+        });
     }
 }
 

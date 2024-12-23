@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { Lensflare, LensflareElement } from 'three/addons/objects/Lensflare.js';
+import { gsap } from 'gsap';
 
 class Sun extends THREE.Group {
     constructor(position = new THREE.Vector3(10,0,0)) {
@@ -7,10 +8,10 @@ class Sun extends THREE.Group {
 
         const loader = new THREE.TextureLoader();
 
-        const light = new THREE.AmbientLight( 0x404040 , 0.4); // soft white light
+        const light = new THREE.AmbientLight( 0x404040 , 0); // soft white light
         this.add( light );
 
-        const pointLight = new THREE.PointLight( 0xffffff, 3, 0, 0.25);
+        const pointLight = new THREE.PointLight( 0xffffff, 0, 0, 0.25);
         pointLight.position.copy(position);
         pointLight.castShadow = true;
 
@@ -23,7 +24,10 @@ class Sun extends THREE.Group {
         const textureFlare0 = loader.load( "/theme/3d/flare1.png" );
         const textureFlare1 = loader.load( "/theme/3d/flare2.png" );
 
-        const lensflare = new Lensflare();
+        const lensflare = new Lensflare({
+            transparent: true,
+            opacity: 0
+        });
 
         lensflare.addElement( new LensflareElement( textureFlare0, 1024, 0 ) );
         lensflare.addElement( new LensflareElement( textureFlare1, 1024, 0 ) );
@@ -31,6 +35,8 @@ class Sun extends THREE.Group {
         pointLight.add( lensflare );
 
         this.pointLight = pointLight;
+        gsap.to(this.pointLight, {intensity: 3, duration: 2});
+        gsap.to(light, {intensity: 0.4, duration: 5});
     }
 }
 

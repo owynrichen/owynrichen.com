@@ -4,12 +4,13 @@ body {
     font-style: normal;
     font-size : 100% ;
     background-color : #111 ;
-    color : #ffffff ;
+    color: #ccd;
     /* width : 80% ; */
     min-width : 400px ;
     min-height : 200px ;
-    padding : 1em ;
-    margin : 5% 10% ;
+    /* padding : 1em ;
+    margin : 5% 10% ; */
+    margin: 0;
     /* border : thin solid gray ;
     border-radius : 5px ; */
     display : block ;
@@ -27,19 +28,55 @@ body {
 }
 
 hgroup {
-    height: 500px;
+    height: max(100%, 500px);
     width: 100%;
-    text-align: center;
     font-size: 50pt;
     color: #ccd;
-    backdrop-filter: blur(5px);
-    border: solid 10px #333;
-    border-radius: 5px;
+    backdrop-filter: grayscale(0.8) blur(2px);
+    background-clip: text;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-a:link    { color : blue ; text-decoration : none ;      }
-a:hover   { color : blue ; text-decoration : underline ; }
-a:visited { color : blue ;                               }
+nav {
+    backdrop-filter: grayscale(0.8) blur(2px);
+    padding: 10px;
+    mask: linear-gradient(rgba(1,1,1,1) 0%, rgba(0,0,0,0) 100%); 
+}
+
+a:link    { 
+    color : #ccd;
+    text-decoration : none;
+    animation: none;
+}
+a:hover   { 
+    color : #ccd;
+    text-decoration: none;
+    animation: aLinkHover 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes aLinkHover {
+    from {
+        opacity: 1.0;
+        transform: scale(1.0);
+    }
+    to {
+        opacity: 0.8;
+        transform: scale(1.25);
+    }
+}
+
+h1 {
+    margin: 0px;
+}
+
+nav ul {
+    margin: 0;
+    text-decoration: none;
+    list-style-type: none;
+    display: inline;
+}
 
 h1 a { color : inherit !important }
 h2 a { color : inherit !important }

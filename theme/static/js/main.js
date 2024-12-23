@@ -1,10 +1,16 @@
 import * as THREE from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import * as BufferGeometryUtils from 'three/addons/utils/BufferGeometryUtils.js';
 import { Starfield } from './Starfield.js';
 import { Earth } from './Earth.js';
 import { Sun } from './Sun.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { FilmPass } from 'three/addons/postprocessing/FilmPass.js';
+import { OutputPass} from 'three/addons/postprocessing/OutputPass.js';
+
+import { gsap } from 'gsap';
 
 function resizeRendererToDisplaySize(renderer) {
     const canvas = renderer.domElement;
@@ -29,19 +35,19 @@ const camera = new THREE.PerspectiveCamera( 70, canvas.clientWidth / canvas.clie
 camera.position.set(-2.5906304864660354, 0.6315778092534803, 1.0078201455690863);
 camera.rotation.set(-1.7502224774749415, -1.257885472271306, -1.7591697371977346, "XYZ");
 
-// const helper = new THREE.CameraHelper( camera );
-// scene.add( helper );
-
-// const axesHelper = new THREE.AxesHelper( 5 );
-// scene.add( axesHelper );
-
 const renderer = new THREE.WebGLRenderer( { alpha: true, antialias: true, canvas } );
+renderer.toneMapping = THREE.ReinhardToneMapping;
+resizeRendererToDisplaySize(renderer);
 // renderer.shadowMap.enabled = true;
 // renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.setAnimationLoop( animate );
 
-// const pmremGenerator = new THREE.PMREMGenerator(renderer);
-// pmremGenerator.compileEquirectangularShader();
+const composer = new EffectComposer(renderer);
+const renderPass = new RenderPass( scene, camera );
+composer.addPass( renderPass );
+composer.addPass( new UnrealBloomPass( new THREE.Vector2( canvas.clientWidth, canvas.clientHeight ), 1, 1, 1 ) );
+composer.addPass( new FilmPass(0.5) );
+composer.addPass( new OutputPass() );
 
 const controls = new OrbitControls(camera, canvas);
 controls.target.set(0, 0, 0);
@@ -99,11 +105,12 @@ function addPlaneFromObject3D(plane, planemesh) {
     planemesh.name = plane["tail"];
     planemesh.castShadow = true;
     planemesh.receiveShadow = true;
+    planemesh.visible = false;
 
     const sphere = new THREE.Sphere(new THREE.Vector3(), 1 + plane["alt"] * 0.000005);
     const position = latLongToVector3(plane["lat"], plane["lon"], 1, plane["alt"] * 0.000005);
     planemesh.position.set(position.x, position.y, position.z);
-    
+
     // setup to 'fly' on earth curve
     const normal = planemesh.position.clone().sub(new THREE.Vector3()).normalize(); // calculate normal vector
     let quaternion = new THREE.Quaternion(); // do quaternion math and convert to Euler units
@@ -126,11 +133,15 @@ function addPlaneFromObject3D(plane, planemesh) {
         mesh: planemesh,
         dist: 0,
         startPosition: position,
-        sphere: sphere
+        sphere: sphere,
+        tween: gsap.to(planemesh.material, { opacity: 0, duration: 0, delay: 2, onComplete: () => {
+            planemesh.visible = true;
+            gsap.to(planemesh.material, {opacity: 1, duration: 4});
+        }})
     };
 
     planeGroup.add(planemesh);
-    console.log("added " + plane["tail"]);
+    // console.log("added " + plane["tail"]);
 }
 
 console.log("fetching planes...")
@@ -145,18 +156,32 @@ fetch("https://api.owynrichen.com/").then((response) => {
             const planeObjectScene = gltf.scene;
             const meshes = planeObjectScene.getObjectsByProperty("isMesh", true);
 
-            const planemat = new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0x770033, emissiveIntensity: 0.4 });
-            const n563vwmat = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+            const planemat = new THREE.MeshStandardMaterial({
+                color: 0xffffff,
+                emissive: 0x770033,
+                emissiveIntensity: 0.4,
+                roughness: 0.5,
+                transparent: true,
+                opacity: 0
+            });
+            const n563vwmat = new THREE.MeshStandardMaterial({
+                color: 0xff0000,
+                emissive: 0xff0000,
+                emissiveIntensity: 0.4,
+                roughness: 0.5,
+                transparent: true,
+                opacity: 0
+             });
 
             const planeObject3D = meshes[0];
             planeObject3D.material = planemat;
 
             planeObject3D.scale.multiplyScalar(0.00015);
-    
+
             console.log("fetched " + p.length + " planes.");
-    
+
             let n563vw_flying = false;
-    
+
             for(var i = 0; i < p.length; i++) {
                 const plane = p[i];
                 const newPlane = planeObject3D.clone();
@@ -164,23 +189,21 @@ fetch("https://api.owynrichen.com/").then((response) => {
                 if (plane["tail"] == "N563VW") {
                     n563vw_flying = true;
                     newPlane.material = n563vwmat;
-                    newPlane.scale.multiplyScalar(3);
                 }
 
                 addPlaneFromObject3D(plane, newPlane);
             }
-    
+
             if (!n563vw_flying) {
                 console.log("n563vw on the ground");
                 const newPlane = planeObject3D.clone();
                 newPlane.material = n563vwmat;
-                newPlane.scale.multiplyScalar(3);
                 addPlaneFromObject3D(n563vw_grounded, newPlane);
             }
-    
-            planes["N563VW"]["mesh"].scale.multiplyScalar(2);
+
+            planes["N563VW"]["mesh"].scale.multiplyScalar(3);
         });
-    
+
         console.log("planes fetched");
     })
 }, (error) => {
@@ -191,8 +214,6 @@ fetch("https://api.owynrichen.com/").then((response) => {
 // animation
 
 function animate( time ) {
-
-    // const delta = time / 20000;
     const delta = clock.getDelta();
 
     if (resizeRendererToDisplaySize(renderer)) {
@@ -207,13 +228,17 @@ function animate( time ) {
         earth.rotationStep(delta);
     }
 
+    if (starfield != null) {
+        starfield.twinkleStep(delta);
+    }
+
     for(const [key, data] of Object.entries(planes)) {
         const mesh = data["mesh"];
         const vel = data["data"]["vel"] * 0.00001 * delta;
         let distance = data["distance"];
         distance += vel;
         data["distance"] = distance;
-        
+
         // fly in the direction of the plane heading by
         // setting the rotation to maintain the track direction
         const sphere = data["sphere"]
@@ -245,11 +270,9 @@ function animate( time ) {
         mesh.quaternion.multiply(trackQ);
         const pos = mesh.position;
         const rot = mesh.rotation;
-        // console.log(`${mesh.name} ${pos.x},${pos.y},${pos.z} | ${rot.x},${rot.y},${rot .z} - ${normal.x},${normal.y},${normal.z}`);
     }
 
-    //console.log(camera);
-
-	renderer.render( scene, camera );
+    composer.render(delta);
+	// renderer.render( scene, camera );
 
 }

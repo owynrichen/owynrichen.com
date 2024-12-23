@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { MeshFresnelMaterial } from './MeshFresnelMaterial.js';
+import { gsap } from 'gsap';
 
 class Earth extends THREE.Group {
     constructor(
@@ -38,14 +39,18 @@ class Earth extends THREE.Group {
                 roughness: 0.5,
                 roughnessMap: specTex,
                 metalness: 0.2,
-                metalnessMap: specTex
+                metalnessMap: specTex,
+                opacity: 0,
+                transparent: true
             });
 
             // TODO: figure out the best way to show this on the dark side
             // probably a custom shader...
             const earthNightMat = new THREE.MeshBasicMaterial({
                 map: mapNightTex,
-                blending: THREE.AdditiveBlending
+                blending: THREE.AdditiveBlending,
+                opacity: 0,
+                transparent: true
             })
 
 
@@ -54,7 +59,7 @@ class Earth extends THREE.Group {
                 alphaMap: cloudTex,
                 // specularIntensityMap: cloudTex,
                 transparent: true,
-                opacity: 0.8,
+                opacity: 0,
                 // blending: THREE.AdditiveBlending
             });
 
@@ -82,6 +87,10 @@ class Earth extends THREE.Group {
             this.castShadow = true;
 
             console.log("loaded earth");
+            gsap.to(earthMat, {opacity: 1, duration: 2});
+            gsap.to(earthNightMat, {opacity: 1, duration: 2});
+            gsap.to(cloudMat, {opacity: 0.8, duration: 2});
+            gsap.to(atmosMat.uniforms.fresnelBias, {value: 0.2, duration: 2});
         }
         )
     }
