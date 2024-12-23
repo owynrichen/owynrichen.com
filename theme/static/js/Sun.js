@@ -6,6 +6,10 @@ class Sun extends THREE.Group {
     constructor(position = new THREE.Vector3(10,0,0)) {
         super();
 
+        const sun = new THREE.Mesh(new THREE.SphereGeometry(1, 16, 16), new THREE.MeshStandardMaterial({color: 0xffffff, emissive: 0xffffdd, emissiveIntensity: 1.1 }));
+        sun.position.copy(position);
+        this.add(sun);
+
         const loader = new THREE.TextureLoader();
 
         const light = new THREE.AmbientLight( 0x404040 , 0); // soft white light
@@ -32,7 +36,7 @@ class Sun extends THREE.Group {
         lensflare.addElement( new LensflareElement( textureFlare0, 1024, 0 ) );
         lensflare.addElement( new LensflareElement( textureFlare1, 1024, 0 ) );
 
-        pointLight.add( lensflare );
+        // pointLight.add( lensflare );
 
         this.pointLight = pointLight;
         gsap.to(this.pointLight, {intensity: 3, duration: 2});

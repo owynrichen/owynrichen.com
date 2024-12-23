@@ -71,8 +71,8 @@ class Earth extends THREE.Group {
             const clouds = new THREE.Mesh(sphere, cloudMat);
             clouds.scale.set(1.005, 1.005, 1.005);
             clouds.name = 'clouds';
-            clouds.castShadow = true;
-            clouds.receiveShadow = true;
+            //clouds.castShadow = true;
+            //clouds.receiveShadow = true;
             this.add(clouds);
 
             const atmosMat = new MeshFresnelMaterial();
