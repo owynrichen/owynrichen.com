@@ -1,7 +1,7 @@
 Title: Hello World!
 Date: 2024-12-11
-Category: WTF
-Tags: Testing, Pelican
+Category: Tinkering
+Tags: Pelican
 Slug: hello-world
 Authors: Owyn Richen
 

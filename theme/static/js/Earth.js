@@ -76,6 +76,8 @@ class Earth extends THREE.Group {
             this.add(clouds);
 
             const atmosMat = new MeshFresnelMaterial();
+            atmosMat.opacity = 0;
+            atmosMat.transparent = true;
             const earthAtmos = new THREE.Mesh(sphere, atmosMat);
             earthAtmos.scale.set(1.01, 1.01, 1.01);
             this.add(earthAtmos);
@@ -90,6 +92,7 @@ class Earth extends THREE.Group {
             gsap.to(earthMat, {opacity: 1, duration: 2});
             gsap.to(earthNightMat, {opacity: 1, duration: 2});
             gsap.to(cloudMat, {opacity: 0.8, duration: 2});
+            gsap.to(atmosMat, {opacity: 0.8, duration: 2});
             gsap.to(atmosMat.uniforms.fresnelBias, {value: 0.2, duration: 2});
         }
         )

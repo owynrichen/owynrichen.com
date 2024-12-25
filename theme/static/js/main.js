@@ -8,7 +8,7 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { FilmPass } from 'three/addons/postprocessing/FilmPass.js';
-import { OutputPass} from 'three/addons/postprocessing/OutputPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 
 function resizeRendererToDisplaySize(renderer, camera, composer) {
     const canvas = renderer.domElement;
@@ -23,7 +23,7 @@ function resizeRendererToDisplaySize(renderer, camera, composer) {
         composer.setSize(width, height);
     }
     return needResize;
-  }
+}
 
 // init
 
@@ -57,6 +57,14 @@ controls.update();
 controls.addEventListener('change', (e) => {
     console.log(camera);
 });
+
+window.addEventListener('scroll', () => {
+    document.body.style.setProperty(
+        '--scroll',
+        window.scrollY / (document.body.offsetHeight - window.innerHeight)
+    );
+    resizeRendererToDisplaySize(renderer, camera, composer);
+}, false);
 
 const clock = new THREE.Clock();
 

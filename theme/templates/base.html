@@ -44,7 +44,7 @@
   </head>
 
   <body>
-    <header>
+    <header id="top_header">
       <hgroup><h1><a href="{{ SITEURL }}/">{{ SITENAME }}</a></h1>{% if SITESUBTITLE %}<p>{{ SITESUBTITLE }}</p>{% endif %}</hgroup>
       <nav><ul>
         {% for title, link in MENUITEMS %}
@@ -73,7 +73,6 @@
       </address>
     </footer>
     <canvas id="c"></canvas>
-    <div id="bg"></div>
     <script type="importmap">
       {
          "imports": {
