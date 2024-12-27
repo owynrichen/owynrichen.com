@@ -8,6 +8,10 @@ TIMEZONE = 'America/Los_Angeles'
 
 DEFAULT_LANG = 'English'
 
+DEFAULT_METADATA = {
+    'status': 'draft',
+}
+
 # Feed generation is usually not desired when developing
 FEED_ALL_ATOM = None
 CATEGORY_FEED_ATOM = None

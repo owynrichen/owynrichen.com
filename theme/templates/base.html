@@ -40,6 +40,8 @@
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
       <link href="https://fonts.googleapis.com/css2?family=Covered+By+Your+Grace&family=Rubik+Mono+One&display=swap" rel="stylesheet">
       <link rel="stylesheet" type="text/css" href="{{ SITEURL }}/theme/css/style.css" />
+      {% block extra_head %}
+      {% endblock %}
     {% endblock head %}
   </head>
 
@@ -70,18 +72,11 @@
       <address>
         Proudly powered by <a rel="nofollow" href="https://getpelican.com/">Pelican</a>,
         which takes great advantage of <a rel="nofollow" href="https://www.python.org/">Python</a>.
+        https://calendly.com/owynrichen/30min
+
       </address>
     </footer>
-    <canvas id="c"></canvas>
-    <script type="importmap">
-      {
-         "imports": {
-            "three": "https://unpkg.com/three@0.171.0/build/three.module.js",
-            "three/addons/": "https://unpkg.com/three@0.171.0/examples/jsm/",
-            "gsap": "https://unpkg.com/gsap@3.12.5/all.js"
-         }
-      }
-   </script>
-    <script type="module" src="{{ SITEURL }}/theme/js/main.js"></script>
+    {% block extra_body %}
+    {% endblock %}
   </body>
 </html>

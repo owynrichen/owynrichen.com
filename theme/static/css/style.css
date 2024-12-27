@@ -1,5 +1,10 @@
 :root {
     --scroll: 0;
+    --light-color: #ccd;
+    --light-color-alternate: #667;
+    --dark-color: #334;
+    --heading-background: #112;
+    --body-background: #ccc;
 }
 
 html {
@@ -11,118 +16,48 @@ body {
     font-weight: 400;
     font-style: normal;
     font-size : 100% ;
-    background-color : #ccc;
-    color: #ccd;
+    background-color : var(--body-background);
+    color: var(--dark-color);
     min-width : 400px ;
-    min-height : 500vh ;
+    min-height : 500vh;
     margin: 0;
     display : block ;
     height: 100%;
 }
 
 header#top_header {
-    height: 100vh;
     width: 100vw;
-    color: #ccd;
-    backdrop-filter: grayscale(90%) blur(10px) brightness(10%);
-    background-color: rgba(1,1,1,0);
+    color: var(--light-color);
+    height: 5vh;
+    background-color: rgba(from var(--heading-background) r g b / 1.0);
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     flex-direction: column;
-    mask-image: linear-gradient(rgba(1, 1, 1, 1) 80%, rgba(0, 0, 0, 0) 100%);
+    mask-image: linear-gradient(rgba(from var(--heading-background) r g b / 1.0) 80%, rgba(from var(--heading-background) r g b / 0) 100%);
     position: fixed;
     top: 0;
     left: 0;
-    animation: scrollHomeHeader 1s linear 1 calc(var(--scroll) * -1s) both paused;
     z-index: 10;
 }
 
 header#top_header hgroup {
     margin: 0;
-    padding-top: 10vh;
-    animation: scrollHomeHGroup 1s linear 1 calc(var(--scroll) * -1s) both paused;
+    padding-top: 2vh;
+    transform: translateX(-40vw);
 }
 
 header#top_header hgroup h1 {
     margin: 0px;
-    font-size: 15vw;
-    animation: scrollHomeH1 1s linear 1 calc(var(--scroll) * -1s) both paused;
-}
-
-@keyframes scrollHomeHeader {
-    0% {
-        height: 100vh;
-        backdrop-filter: grayscale(90%) blur(10px) brightness(10%);
-        background-color: rgba(1,1,1,0);
-    }
-    15% {
-        backdrop-filter: grayscale(45%) blur(3px) brightness(100%);
-        background-color: rgba(1,1,1,0.1);
-    }
-    30% {
-        backdrop-filter: grayscale(0%) blur(0px) brightness(100%);
-        height: 5vh;
-        background-color: rgba(1,1,1,1.0);
-    }
-    100% {
-        backdrop-filter: grayscale(0%) blur(0px) brightness(100%);
-        height: 5vh;
-        background-color: rgba(1,1,1,1.0);
-    }
-}
-
-@keyframes scrollHomeHGroup {
-    0% {
-        padding-top: 10vh;
-        transform: translateX(0vw);
-    }
-    30% {
-        padding-top: 2vh;
-        transform: translateX(-40vw);
-    }
-    100% {
-        padding-top: 2vh;
-        transform: translateX(-40vw);
-    }
-}
-
-@keyframes scrollHomeH1 {
-    0% {
-        font-size: 15vw;
-    }
-    30% {
-        font-size: max(2vw, 1.2em);
-    }
-    100% {
-        font-size: max(2vw, 1.2em);
-    }
+    font-size: max(2vw, 1.2em);
 }
 
 header#top_header > nav {
     margin: 0;
-    padding-top: 15vh;
-    font-size: 4vh;
-    animation: scrollHomeNav 1s linear 1 calc(var(--scroll) * -1s) both paused;
-}
-
-@keyframes scrollHomeNav {
-    0% {
-        padding-top: 15vh;
-        transform: translateY(0vh);
-        font-size: 4vh;
-    }
-    30% {
-        padding-top: 0vh;
-        transform: translateY(-2.5vh);
-        font-size: 2vh;
-    }
-    100% {
-        padding-top: 0vh;
-        transform: translateY(-2.5vh);
-        font-size: 2vh;
-    }
+    padding-top: 0vh;
+    transform: translateY(-2.5vh);
+    font-size: 2vh;
 }
 
 header#top_header > nav ul {
@@ -140,83 +75,67 @@ header#top_header > nav ul li + li::before {
     content: " | ";
 }
 
+
 body > main {
-    padding: 10 0;
+    padding: 10 6vh;
     display: flex;
     flex-flow: row wrap;
     justify-content: space-evenly;
     align-content: flex-start;
     height: 100%;
-    color: #334;
-    position: fixed;
-    top: 101vh;
-    left: 0;
-    animation: scrollHomeMain 1s linear 1 calc(var(--scroll) * -1s) both paused;
-}
-
-body > main > h2 {
-    width: 100vw;
-    text-align: left;
-    margin: 1em 1em;
-    display: block;
-    font-size: 2em;
-    font-family: "Rubik Mono One", sans-serif;
-}
-
-body > main > article {
-    flex: 1 1 30vw;
-    display: block;
-    padding: 1em;
-    width: 30vw;
-    margin: 1vh 5vw;
-    border: solid 0.2em #ccc;
-    border-radius: 0.5em;
-    transition: transform 0.5s;
-    box-shadow: 0.2em 0.2em 5em 0 rgba(255,255,255,0.5), -0.2em -0.2em 5em 0 rgba(0,0,0,0.5);
-}
-
-body > main > article:hover {
-    transform: scale(1.1);
-    /* animation: hoverArticle 0.5s ease-in-out infinite alternate; */
-}
-
-@hoverArticle {
-    from {
-        transform: scale(1.0);
-    }
-    to {
-        transform: scale(1.1);
-    }
-}
-
-@keyframes scrollHomeMain {
-    0% {
-        top: 101vh;
-    }
-    30% {
-        top: 26vh;
-        transform: translateY(0vh);
-    }
-    100% {
-        top: 26vh;
-        transform: translateY(-500vh);
-    }
+    color: var(--dark-color);
 }
 
 body > footer {
     text-align: center;
     padding: 1em;
-    background-color: #111;
-    color: #ccd;
+    background-color: var(--heading-background);
+    color: var(--light-color);
     font-size: 0.8em;
     position: fixed;
     bottom: 0;
     width: 100%;
 }
 
+body > main > h2 {
+    width: 90vw;
+    text-align: left;
+    margin: -0.5em 1em 0.2em 1em;
+    display: block;
+    font-size: 5em;
+    font-family: "Rubik Mono One", sans-serif;
+}
+
+body > main > article {
+    display: block;
+    padding: 1em;
+    margin: 1vh 5vw;
+    border-radius: 0.5em;
+    perspective: 1000px;
+    box-shadow: 0.2em 0.2em 5em 0 rgba(255,255,255,0.5), -0.2em -0.2em 5em 0 rgba(0,0,0,0.5);
+}
+
+article > header > h2 {
+    text-align: left;
+    display: block;
+    font-size: 1.4em;
+    font-family: "Rubik Mono One", sans-serif;
+}
+
+article > header > section {
+    text-align: left;
+    display: block;
+    font-size: 1em;
+}
+
+article > footer {
+    text-align: right;
+    font-size: 0.8em;
+    color: var(--light-color-alternate);
+}
+
 a:link    {
     color : inherit !important;
-    /* color : #ccd; */
     text-decoration : none;
     animation: none;
 }
@@ -263,53 +182,4 @@ pre {
 #post-list {
     margin-bottom : 1em ;
     margin-top : 1em ;
-}
-
-#c {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
-    z-index: -10;
-    border: none;
-    /* pointer-events: none; */
-    /* mask: linear-gradient(rgba(1, 1, 1, 1) var(--CanvasFadeStart), rgba(0, 0, 0, 0) 100%); */
-    animation: scrollHomeCanvas 1s linear 1 calc(var(--scroll) * -1s) both paused;
- }
-
- @keyframes scrollHomeCanvas {
-    0% {
-        height: 100%;
-        z-index: -10;
-    }
-    30% {
-        height: 25vh;
-        z-index: 1;
-    }
-    100% {
-        height: 25vh;
-        z-index: 1;
-    }
- }
-
- article > header > h2 {
-    width: 100vw;
-    text-align: left;
-    display: block;
-    font-size: 1.4em;
-    font-family: "Rubik Mono One", sans-serif;
-}
-
-article > header > section {
-    width: 100vw;
-    text-align: left;
-    display: block;
-    font-size: 1em;
-}
-
-article > footer {
-    text-align: right;
-    font-size: 0.8em;
-    color: #667;
 }

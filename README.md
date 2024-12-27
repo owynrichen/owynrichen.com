@@ -19,6 +19,11 @@ Here's how to build the website with the appropriate theme:
 poetry run pelican content -t .\theme
 ```
 
+Here's how to run a local version of a server that will autoreload:
+```bash
+poetry run pelican --autoreload --listen -t .\theme\
+```
+
 ## Deploying
 
 This is deployed to Cloudflare automatically with GitOps when the ```main``` branch
@@ -41,5 +46,3 @@ Here's how to deploy the worker:
 ```bash
 npx wrangler@latest deploy
 ```
-
-xv6nEHAgDn4FTwMpsYpEd0kbT4ZI-ZzCAR7Uo4qS

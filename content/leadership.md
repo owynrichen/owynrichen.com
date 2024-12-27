@@ -2,7 +2,7 @@ Title: Leadership Philosophy
 Date: 2024-12-11
 Category: Leadership
 Tags: Musings
-Slug: Leadership
+Slug: leadership
 Authors: Owyn Richen
 
 
