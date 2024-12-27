@@ -17,15 +17,17 @@ There is a wealth of realtime data out there for active flights, so I started di
 
 <style>
 #c {
-    width: 100%;
-    height: 40vh;
+    width: 80vw;
+    aspect-ratio: 16/9;
     z-index: 1;
     border: solid 3px var(--heading-background);
     border-radius: 5px;
     /* pointer-events: none; */
 }
 </style>
-<canvas id="c"></canvas>
+<div style="width: 100%; text-align: center">
+    <canvas id="c"></canvas>
+</div>
 
 OUTLINE
 

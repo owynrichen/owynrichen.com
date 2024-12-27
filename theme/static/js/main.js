@@ -53,6 +53,7 @@ resizeRendererToDisplaySize(renderer, camera, composer);
 
 const controls = new OrbitControls(camera, canvas);
 controls.target.set(0, 0, 0);
+controls.enableDamping = true;
 controls.update();
 controls.addEventListener('change', (e) => {
     console.log(camera);
@@ -102,7 +103,13 @@ function animate( time ) {
 
     if (planes != null) {
         planes.flyHeadings(delta);
+        if (planes.planes["N563VW"] != null) {
+            const pos = planes.planes["N563VW"].position;
+            controls.target.set(pos.x, pos.y, pos.z);
+        }
     }
+
+    controls.update(delta);
 
     composer.render(delta);
 }
