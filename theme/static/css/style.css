@@ -75,13 +75,18 @@ header#top_header > nav ul li + li::before {
     content: " | ";
 }
 
-svg#head_svg {
+div#head_svg_container {
+    z-index: -1;
     position: fixed;
     top: 2.2vh;
     left: -3vw;
     width: 3vw;
     height: 3vh;
-    z-index: -1;
+}
+
+svg#head_svg {
+    width: 100%;
+    height: 100%;
     fill: var(--light-color);
     transform: rotate(-8deg);
 }
@@ -261,6 +266,8 @@ body > main > article > header > h2 {
 
 body > main > article {
     display: block;
+    position: relative;
+    background-color: var(--body-background);
     padding: 1em;
     margin: 1vh 5vw;
     border-radius: 0.5em;
@@ -322,4 +329,84 @@ pre {
 #post-list {
     margin-bottom : 1em ;
     margin-top : 1em ;
+}
+
+div#planetary_gears_container {
+    position: fixed;
+    bottom: -20vh;
+    right: -30vw;
+    width: 100vw;
+    height: 100vh;
+    z-index: -10;
+}
+
+svg#planetary_gears {
+    width: 100%;
+    height: 100%;
+    opacity: 0.2;
+}
+
+svg#planetary_gears g#solarsystem {
+    transform: translate(60.5px, 60.5px) rotate(0deg);
+    animation: rotatePlanets 10.6666s linear infinite;
+}
+
+svg#planetary_gears g#sun {
+    transform: translate(60.5px, 60.5px) rotate(0deg);
+}
+
+svg#planetary_gears g#planets {
+    transform: translate(60.5px, 60.5px) rotate(0deg);
+    animation: rotatePlanets 16s linear infinite;
+}
+
+svg#planetary_gears g#planets g#planet1 {
+    transform: translate(-9px, 40px) rotate(0deg);
+    animation: rotatePlanet1 8s linear infinite;
+}
+
+svg#planetary_gears g#planets g#planet2 {
+    transform: translate(38px,-14px) rotate(9deg);
+    animation: rotatePlanet2 8s linear infinite;
+}
+
+svg#planetary_gears g#planets g#planet3 {
+    transform: translate(-33px,-24px) rotate(-18deg);
+    animation: rotatePlanet3 8s linear infinite;
+}
+
+@keyframes rotatePlanets {
+    from {
+        transform: translate(60.5px, 60.5px) rotate(0deg);
+    }
+    to {
+        transform: translate(60.5px, 60.5px) rotate(360deg);
+    }
+}
+
+@keyframes rotatePlanet1 {
+    from {
+        transform: translate(-9px, 40px) rotate(0deg);
+    }
+    to {
+        transform: translate(-9px, 40px) rotate(360deg);
+    }
+}
+
+@keyframes rotatePlanet2 {
+    from {
+        transform: translate(38px,-14px) rotate(9deg);
+    }
+    to {
+        transform: translate(38px,-14px) rotate(369deg);
+    }
+}
+
+@keyframes rotatePlanet3 {
+    from {
+        transform: translate(-33px,-24px) rotate(-18deg);
+    }
+    to {
+        transform: translate(-33px,-24px) rotate(342deg);
+    }
 }

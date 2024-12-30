@@ -1,108 +1,42 @@
-<!DOCTYPE html>
-<html lang="{% block html_lang %}{{ DEFAULT_LANG }}{% endblock html_lang %}">
-  <head>
-    {% block head %}
-      <title>{% block title %}{{ SITENAME|striptags }}{% endblock title %}</title>
-      <meta charset="utf-8" />
-      <meta name="generator" content="Pelican" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      {% if SITESUBTITLE %}
-        <meta name="description" content="{{ SITESUBTITLE }}" />
-      {% endif %}
-      {% if STYLESHEET_URL %}
-        <link rel="stylesheet" type="text/css" href="{{ STYLESHEET_URL }}" />
-      {% endif %}
-      {% if FEED_ALL_ATOM %}
-        <link href="{{ FEED_DOMAIN }}/{% if FEED_ALL_ATOM_URL %}{{ FEED_ALL_ATOM_URL }}{% else %}{{ FEED_ALL_ATOM }}{% endif %}" type="application/atom+xml" rel="alternate" title="{{ SITENAME|striptags }} Full Atom Feed" />
-      {% endif %}
-      {% if FEED_ALL_RSS %}
-        <link href="{{ FEED_DOMAIN }}/{% if FEED_ALL_RSS_URL %}{{ FEED_ALL_RSS_URL }}{% else %}{{ FEED_ALL_RSS }}{% endif %}" type="application/rss+xml" rel="alternate" title="{{ SITENAME|striptags }} Full RSS Feed" />
-      {% endif %}
-      {% if FEED_ATOM %}
-        <link href="{{ FEED_DOMAIN }}/{%if FEED_ATOM_URL %}{{ FEED_ATOM_URL }}{% else %}{{ FEED_ATOM }}{% endif %}" type="application/atom+xml" rel="alternate" title="{{ SITENAME|striptags }} Atom Feed" />
-      {% endif %}
-      {% if FEED_RSS %}
-        <link href="{{ FEED_DOMAIN }}/{% if FEED_RSS_URL %}{{ FEED_RSS_URL }}{% else %}{{ FEED_RSS }}{% endif %}" type="application/rss+xml" rel="alternate" title="{{ SITENAME|striptags }} RSS Feed" />
-      {% endif %}
-      {% if CATEGORY_FEED_ATOM and category %}
-        <link href="{{ FEED_DOMAIN }}/{% if CATEGORY_FEED_ATOM_URL %}{{ CATEGORY_FEED_ATOM_URL.format(slug=category.slug) }}{% else %}{{ CATEGORY_FEED_ATOM.format(slug=category.slug) }}{% endif %}" type="application/atom+xml" rel="alternate" title="{{ SITENAME|striptags }} Categories Atom Feed" />
-      {% endif %}
-      {% if CATEGORY_FEED_RSS and category %}
-        <link href="{{ FEED_DOMAIN }}/{% if CATEGORY_FEED_RSS_URL %}{{ CATEGORY_FEED_RSS_URL.format(slug=category.slug) }}{% else %}{{ CATEGORY_FEED_RSS.format(slug=category.slug) }}{% endif %}" type="application/rss+xml" rel="alternate" title="{{ SITENAME|striptags }} Categories RSS Feed" />
-      {% endif %}
-      {% if TAG_FEED_ATOM and tag %}
-        <link href="{{ FEED_DOMAIN }}/{% if TAG_FEED_ATOM_URL %}{{ TAG_FEED_ATOM_URL.format(slug=tag.slug) }}{% else %}{{ TAG_FEED_ATOM.format(slug=tag.slug) }}{% endif %}" type="application/atom+xml" rel="alternate" title="{{ SITENAME|striptags }} Tags Atom Feed" />
-      {% endif %}
-      {% if TAG_FEED_RSS and tag %}
-        <link href="{{ FEED_DOMAIN }}/{% if TAG_FEED_RSS_URL %}{{ TAG_FEED_RSS_URL.format(slug=tag.slug) }}{% else %}{{ TAG_FEED_RSS.format(slug=tag.slug) }}{% endif %}" type="application/rss+xml" rel="alternate" title="{{ SITENAME|striptags }} Tags RSS Feed" />
-      {% endif %}
-      <link rel="preconnect" href="https://fonts.googleapis.com">
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-      <link href="https://fonts.googleapis.com/css2?family=Covered+By+Your+Grace&family=League+Gothic&family=Rubik+Mono+One&display=swap" rel="stylesheet">
-      <link rel="stylesheet" type="text/css" href="{{ SITEURL }}/theme/css/style.css" />
-      {% block extra_head %}
-      {% endblock %}
-    {% endblock head %}
-  </head>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
 
-  <body>
-    <header id="top_header">
-      <hgroup><h1><a href="{{ SITEURL }}/">{{ SITENAME }}</a></h1>{% if SITESUBTITLE %}<p>{{ SITESUBTITLE }}</p>{% endif %}
-      <div id="head_svg_container"> 
-      <svg
-   width="85mm"
-   height="105mm"
-   viewBox="0 0 85 105"
-   version="1.1"
-   id="head_svg"
-   xml:space="preserve"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg"><defs
-     id="defs1" /><path
-     d="M 12.965966,105 V 86.940012 C 9.0184104,83.30001 5.95386,79.047508 3.7723162,74.182507 1.5907725,69.317505 0.50000011,64.190007 0.50000011,58.800012 0.50000011,48.300011 4.1359067,39.375013 11.40772,32.025007 18.679533,24.675 27.509592,21.000002 37.897897,21.000002 c 8.65692,0 16.32695,2.572501 23.01009,7.717502 6.683142,5.145002 11.028923,11.847502 13.037322,20.107501 l 5.401925,21.525005 c 0.34627,1.329999 0.103882,2.537495 -0.727183,3.622499 -0.831064,1.085004 -1.939151,1.627502 -3.324259,1.627502 h -8.310647 v 12.599996 c 0,2.310004 -0.813748,4.287498 -2.441243,5.932503 -1.627506,1.645004 -3.583964,2.467502 -5.869395,2.467502 H 50.363862 V 105 H 42.053218 V 88.200007 H 58.674507 V 67.200006 h 11.21937 l -3.94756,-16.274995 c -1.592872,-6.37 -4.986389,-11.549998 -10.180537,-15.540003 -5.194152,-3.990004 -11.150114,-5.985002 -17.867883,-5.985002 -8.033622,0 -14.889903,2.834998 -20.568844,8.505004 -5.678939,5.669995 -8.5184093,12.56499 -8.5184093,20.684994 0,4.200002 0.8483777,8.190007 2.5451343,11.970004 1.696757,3.780007 4.103381,7.140009 7.219873,10.080005 l 2.700958,2.519992 V 105 Z"
-     id="head"
-     style="" /><path
-     d="m 68.999995,32 q -0.896552,0 -1.620686,-0.4375 -0.724134,-0.437499 -1.137927,-1.172496 -1.137936,0 -1.948279,-0.822498 -0.810344,-0.822508 -0.810344,-1.977504 v -4.97 q -2.034488,-1.365 -3.258623,-3.605 Q 59,16.775003 59,14.149995 q 0,-4.2349939 2.913789,-7.1924994 2.913798,-2.9574955 7.086206,-2.9574955 4.172418,0 7.086216,2.9574955 Q 79,9.9150011 79,14.149995 q 0,2.695009 -1.224136,4.900008 -1.224135,2.204999 -3.258623,3.569999 v 4.97 q 0,1.154996 -0.810344,1.977504 -0.810343,0.822498 -1.948279,0.822498 Q 71.344825,31.125001 70.620691,31.5625 69.896547,32 68.999995,32 Z m -2.758613,-4.409998 h 5.517236 v -1.259998 h -5.517236 z m 0,-2.659999 h 5.517236 v -1.329999 h -5.517236 z m -0.275868,-4.130001 h 2.000005 V 17.019998 L 64.931038,13.94 l 1.448268,-1.470002 2.620689,2.659998 2.620699,-2.659998 1.448268,1.470002 -3.034481,3.079998 v 3.780004 h 2.000005 q 1.862071,-0.91 3.034481,-2.677499 1.17241,-1.767499 1.17241,-3.972508 0,-3.079998 -2.103445,-5.2149956 -2.103446,-2.1349973 -5.137937,-2.1349973 -3.034481,0 -5.137927,2.1349973 -2.103445,2.1349976 -2.103445,5.2149956 0,2.205009 1.17241,3.972508 1.17241,1.767499 3.034481,2.677499 z m 3.034481,-5.670006 z m 0,-1.329999 z"
-     id="bulb"
-     style="transform-origin: 69px 18px;" /><g
-     id="layer4"><path
-       d="m 20.744943,64.190184 4.843154,6.874809 4.686197,-2.493013 c 0.495795,0.337979 0.990143,0.612934 1.483039,0.824854 0.492897,0.211921 0.984335,0.360827 1.474334,0.4467 L 34.287299,75 l 8.300804,-0.654324 0.172196,-5.242569 c 0.541835,-0.206339 1.043311,-0.46997 1.504427,-0.790892 0.461116,-0.320913 0.881871,-0.699128 1.26227,-1.134624 l 5.015356,1.63223 L 54,61.280688 49.486005,58.531122 c 0.0864,-0.487026 0.113701,-0.996957 0.08193,-1.529807 -0.03178,-0.53284 -0.122653,-1.088597 -0.272606,-1.667268 l 3.959726,-3.524231 -4.843154,-6.87481 -4.686197,2.49301 C 43.229902,47.090046 42.735555,46.815095 42.242667,46.603165 41.749761,46.39125 41.258322,46.242343 40.768333,46.156463 L 39.712701,41 l -8.300804,0.65432 -0.172204,5.242578 c -0.541835,0.20634 -1.043311,0.46997 -1.504427,0.79089 -0.461116,0.320919 -0.881871,0.699131 -1.26227,1.134629 L 23.457648,47.190181 20,54.71931 l 4.513995,2.74957 c -0.0864,0.487024 -0.113709,0.996959 -0.08193,1.529802 0.03178,0.532853 0.122645,1.088605 0.272606,1.667276 z m 11.067501,-2.57984 c -1.008991,-1.432245 -1.362287,-3.000668 -1.05989,-4.705257 0.302398,-1.704587 1.174088,-3.058316 2.615078,-4.061191 1.440981,-1.00287 3.018972,-1.354028 4.733965,-1.053469 1.714983,0.300566 3.076969,1.166976 4.08596,2.599228 1.008991,1.432251 1.362287,3.00067 1.059889,4.70526 -0.302405,1.70459 -1.174103,3.058322 -2.615085,4.061195 -1.44099,1.002873 -3.018973,1.354033 -4.733957,1.053469 -1.714983,-0.300574 -3.07697,-1.166979 -4.08596,-2.599235 z"
-       style="transform-origin:37px 58px;"
-       id="gear" /></g></svg>
-      </div>
-      </hgroup>
-      <nav><ul>
-        {% for title, link in MENUITEMS %}
-          <li><a href="{{ link }}">{{ title }}</a></li>
-        {% endfor %}
-        {% if DISPLAY_PAGES_ON_MENU %}
-          {% for p in pages %}
-            <li><a href="{{ SITEURL }}/{{ p.url }}" {% if p==page %} aria-current="page" {% endif %}>{{ p.title }}</a></li>
-          {% endfor %}
-        {% endif %}
-        {% if DISPLAY_CATEGORIES_ON_MENU %}
-          {% for cat, null in categories %}
-            <li><a href="{{ SITEURL }}/{{ cat.url }}" {% if cat==category %} aria-current="page" {% endif %}>{{ cat}}</a></li>
-          {% endfor %}
-        {% endif %}
-      </ul></nav>
-    </header>
-    <main>
-      {% block content %}
-      {% endblock %}
-      <div id="planetary_gears_container">
-      <svg
+<svg
    width="121mm"
    height="121mm"
    viewBox="0 0 121 121"
    version="1.1"
-   id="planetary_gears"
+   id="svg1"
+   inkscape:version="1.3 (0e150ed6c4, 2023-07-21)"
+   sodipodi:docname="planetaryGearsInk.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="4.150241"
+     inkscape:cx="228.66142"
+     inkscape:cy="169.99013"
+     inkscape:window-width="2560"
+     inkscape:window-height="1369"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1" />
   <defs
      id="defs1" />
   <g
-
+     inkscape:label="SolarSystemGear"
+     transform="matrix(1.0038256,0,0,1.0038272,60.5,60.500096)"
      id="solarsystem"
      style="stroke-width:1;stroke-dasharray:none">
     <path
@@ -117,7 +51,8 @@
        r="60.219433" />
   </g>
   <g
-    
+     inkscape:label="SunGear"
+     transform="matrix(1.006074,0,0,1.0069907,60.973594,61.000004)"
      id="sun">
     <path
        style="fill:none;stroke:#000000;stroke-width:0.264583"
@@ -131,10 +66,15 @@
        r="2.6458333" />
   </g>
   <g
-     id="planets">
+     inkscape:groupmode="layer"
+     id="planets"
+     inkscape:label="PlanetGears">
     <g
-
-       id="planet3">
+       inkscape:label="Planet3Gear"
+       transform="matrix(0.97872081,0.10582219,-0.1058323,0.97867592,21.637317,72.414166)"
+       id="planet3"
+       inkscape:transform-center-x="0.12446216"
+       inkscape:transform-center-y="-0.068178036">
       <path
          style="fill:none;stroke:#000000;stroke-width:0.264583"
          d="M 11.149922,3.4959646 11.982483,3.754454 12.69759,4.1867522 13.983632,5.5824577 13.532599,6.608756 11.634785,6.6050845 10.832758,6.3705677 10.079343,5.9319841 8.9551119,7.5391392 9.625394,8.0965457 10.12065,8.7696113 10.774717,10.551223 9.9652684,11.326783 8.2132786,10.597105 7.5620104,10.073485 7.0337928,9.3799787 5.3800723,10.434514 5.786029,11.205985 5.9860303,12.017347 5.9085392,13.91362 4.863905,14.320365 3.5245052,12.97578 3.1231809,12.242806 2.9005588,11.399951 l -1.93140212,0.341387 0.0798302,0.868093 -0.12570368,0.826147 -0.79726271,1.722268 -1.12077461,-0.024 -0.7229229,-1.754802 -0.090291,-0.830746 0.1168635,-0.863893 -1.915026,-0.423768 -0.2584583,0.832571 -0.4322675,0.715108 -1.3956371,1.286028 -1.0262904,-0.451075 0.00361,-1.897853 0.2344878,-0.802038 0.4385515,-0.753416 -1.6071558,-1.1243048 -0.5573742,0.6702796 -0.6730365,0.4952452 -1.781555,0.654027 -0.775569,-0.809486 0.729609,-1.7520042 0.523589,-0.6512663 0.6934763,-0.5282075 -1.0545633,-1.6537874 -0.771443,0.4059416 -0.811339,0.1999807 -1.896235,-0.077551 -0.406768,-1.0446684 1.344515,-1.3393871 0.732946,-0.4013102 0.842832,-0.2226007 -0.341441,-1.9314535 -0.868072,0.079805 -0.826133,-0.1257311 -1.722256,-0.79733197 0.02396,-1.12079746 1.754743,-0.72288497 0.830726,-0.090267 0.863879,0.1168923 0.423709,-1.9150514 -0.832562,-0.2584893 -0.715106,-0.4322982 -1.286043,-1.3957055 0.451034,-1.0262985 1.897814,0.00367 0.802027,0.2345168 0.753414,0.4385837 1.1242322,-1.6071552 -0.6702822,-0.5574064 -0.495256,-0.6730657 -0.654067,-1.7816121 0.809445,-0.77556 1.7519906,0.729678 0.6512679,0.52362 0.528218,0.693506 1.6537205,-1.054535 -0.4059567,-0.771471 -0.2000013,-0.811362 0.077491,-1.896273 1.0446345,-0.406745 1.3393999,1.344585 0.4013244,0.732973 0.2226219,0.842856 1.9314023,-0.341388 -0.07983,-0.868093 0.1257029,-0.826146 0.7972622,-1.722268 1.1207747,0.024 0.7229238,1.754803 0.090291,0.830745 -0.1168635,0.863893 1.9150242,0.423778 0.2584585,-0.832572 0.4322673,-0.715107 1.3956371,-1.286028 1.0262905,0.451075 -0.00361,1.897853 -0.2344877,0.802036 -0.4385514,0.753417 1.6071558,1.1243045 0.5573742,-0.6702796 0.6730363,-0.4952449 1.7815551,-0.654027 0.775568,0.809487 -0.729609,1.7520038 -0.5235887,0.651266 -0.6934758,0.5282078 1.0545635,1.6537874 0.771443,-0.4059417 0.811338,-0.1999808 1.896235,0.07755 0.406768,1.0446687 -1.344515,1.3393871 -0.732946,0.4013103 -0.842831,0.2226009 0.34144,1.9314532 0.868072,-0.079805 0.826133,0.1257311 1.722256,0.79733199 -0.02396,1.12079746 -1.754743,0.72288495 -0.830726,0.090267 -0.863878,-0.1168923 z"
@@ -147,7 +87,8 @@
          r="2.6458333" />
     </g>
     <g
-
+       inkscape:label="Planet2Gear"
+       transform="matrix(0.99816632,-0.06039412,0.06039462,0.99817458,80.026303,25.026426)"
        id="planet2">
       <path
          style="fill:none;stroke:#000000;stroke-width:0.259567"
@@ -161,6 +102,8 @@
          r="2.6458333" />
     </g>
     <g
+       inkscape:label="Planet1Gear"
+       transform="matrix(0.98169912,0,0,0.98168518,90.368986,88.57151)"
        id="planet1">
       <path
          style="fill:none;stroke:#000000;stroke-width:0.264583"
@@ -174,17 +117,4 @@
          r="2.6458333" />
     </g>
   </g>
-</svg></div>
-    </main>
-    <footer>
-      <address>
-        Proudly powered by <a rel="nofollow" href="https://getpelican.com/">Pelican</a>,
-        which takes great advantage of <a rel="nofollow" href="https://www.python.org/">Python</a>.
-        https://calendly.com/owynrichen/30min
-
-      </address>
-    </footer>
-    {% block extra_body %}
-    {% endblock %}
-  </body>
-</html>
+</svg>
