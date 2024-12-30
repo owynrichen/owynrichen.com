@@ -13,7 +13,11 @@ html {
 }
 
 body {
-    font-family: "Covered By Your Grace", serif;
+    font-family: "Open Sans", serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+    font-variation-settings: "wdth" 100;
     font-weight: 400;
     font-style: normal;
     font-size : 100% ;
@@ -27,6 +31,7 @@ body {
 }
 
 header#top_header {
+    font-family: "Covered By Your Grace", serif;
     width: 100vw;
     color: var(--light-color);
     height: 5vh;
@@ -247,10 +252,22 @@ body > footer {
     padding: 1em;
     background-color: var(--heading-background);
     color: var(--light-color);
-    font-size: 0.8em;
+    font-size: 1em;
     position: fixed;
     bottom: 0;
     width: 100%;
+    font-family: "Covered by Your Grace", sans-serif;
+}
+
+body > footer > a {
+    color: var(--light-accent) !important;
+    text-decoration: none;
+    font-family: "Covered by Your Grace", sans-serif;
+}
+
+body > footer > address {
+    font-family: "Open Sans", sans-serif;
+    font-size: 0.8em;
 }
 
 body > main > h2,
@@ -262,6 +279,7 @@ body > main > article > header > h2 {
     font-size: 5em;
     text-transform: uppercase;
     font-family: "League Gothic", sans-serif;
+    width: 100%;
 }
 
 body > main > article {
@@ -275,7 +293,42 @@ body > main > article {
     box-shadow: 0.2em 0.2em 5em 0 rgba(255,255,255,0.5), -0.2em -0.2em 5em 0 rgba(0,0,0,0.5);
 }
 
+article > h1 {
+    font-family: "Covered by Your Grace", sans-serif;
+    font-size: 3em;
+    text-align: left;
+    margin: 1em 0em 0.5em 0em;
+    width: 100%;
+}
+
+article > h2 {
+    font-family: "Rubik Mono One", sans-serif;
+    font-size: 1.3em;
+    text-align: left;
+    margin: 1.5em 0em 0em 0em;
+    width: 100%;
+}
+
+article > h3 {
+    font-family: "Rubik Mono One", sans-serif;
+    font-size: 1em;
+    text-align: left;
+    margin: 0.5em 0em 0.5em 0em;
+    width: 100%;
+}
+
+article > h4, h5, h6 {
+    font-family: "Open Sans", sans-serif;
+    font-size: 0.8em;
+    font-weight: 800;
+    text-align: left;
+    color: var(--light-color-alternate);
+    margin: 0.5em 0em 0.5em 0em;
+    width: 100%;
+}
+
 article > footer {
+    font-family: "Covered by Your Grace", sans-serif;
     text-align: right;
     font-size: 0.8em;
     color: var(--light-color-alternate);
@@ -289,14 +342,12 @@ a:link    {
 
 a:hover   {
     color : inherit !important;
-    /* color : #ccd; */
     text-decoration: none;
     animation: aLinkHover 0.5s ease-in-out infinite alternate;
 }
 
 a:visited {
     color : inherit !important;
-    /* color : #ccd; */
     text-decoration : none;
 }
 

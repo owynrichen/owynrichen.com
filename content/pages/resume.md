@@ -19,8 +19,10 @@ Status: published
 
 # EXPERIENCE DETAILS
 
-## Aster Insights, CTO & Advisor
-May 2023 - PRESENT
+## Aster Insights
+### CTO & Advisor
+#### May 2023 - PRESENT
+
 Aster Insights brokers petabytes of oncology patient data between academic research institutions and pharma/biotech customers.  It has recently merged with Zephyr AI.
 
 * Actively engaged in M&A due-diligence of merger candidates, facilitated merger of Aster and Zephyr AI, managing the transition and will be stepping back to an advisor role early 2025.
@@ -31,8 +33,8 @@ Aster Insights brokers petabytes of oncology patient data between academic resea
 * Led new data processing pipelines for digital pathology imaging data modality, a leading driver for our core business and worth an additional $5m+ in revenue
 * Evolved Aster Insights’ security and compliance program so patient data stays actively monitored and secure
 
-## Aster Insights, VP of Engineering
-September 2021 - May 2023
+### VP of Engineering
+#### September 2021 - May 2023
 
 * Rebuilt the full-remote engineering team from 4-31, rapidly hiring both ICs and leaders while managing team size and budget during trying economic times, managing an $7m budget for headcount, contract workers and cloud infrastructure
 * Devised the architectural strategy for Aster's systems enhancement to support oncology research, guiding the team on technology choices and aligning business partners.
@@ -41,8 +43,9 @@ September 2021 - May 2023
 * Delivered new data analysis tools to sales and our academic research center partners, reducing turnaround time for many questions from days to minutes
 * Optimized Azure spend through reservations, budgets and policies, saving ~$1m annually
 
-## Nike Inc., Sr. Director of Engineering - MarTech and DevEx
-June 2019 - September 2021
+## Nike Inc.
+### Sr. Director of Engineering - MarTech and DevEx
+#### June 2019 - September 2021
 
 * Managed a global, multi-level engineering and product organization of 150+ fulltime and contract workers and with diverse disciplines (front end web, mobile, data and platform engineering)
 * Developed and managed a ~$40m budget, set technical vision and strategy, aligned vision with business stakeholders, VP and CTO/CDIO.
@@ -54,16 +57,16 @@ June 2019 - September 2021
 * Steered a strategic partnership with Adobe for a faster CDP and targeting solutions, adapting their product to meet our privacy needs.
 * Negotiated vendor software and labor contracts to scale development, championing them to executive leadership to get buy-in and budget
 
-## Nike Inc., Sr. Director of Engineering - Consumer Data and ML
-September 2017 - June 2019
+### Sr. Director of Engineering - Consumer Data and ML
+#### September 2017 - June 2019
 
 * Led teams to deliver data and ML platforms for Nike using a mix of open source tools and AWS capabilities, processing 9+ petabytes of data, building machine learning  models using technologies like Tensorflow, Databricks and NiFi
 * Delivered new AI/ML recommendation systems to web and mobile experiences using experimentation techniques, proving with data their effectiveness and driving millions of dollars of incremental annual revenue
 * Scaled the team from 90 to 120, hiring and re-organizing for optimal delivery
 * Increased access to data while protecting consumer privacy exceeding standards like GDPR, CCPA, and DPA, making data access safe
 
-## Nike Inc., Director and Sr. Director of Engineering -  Nike Sport Mobile and Platform
-December 2013 - September 2017
+### Director and Sr. Director of Engineering -  Nike Sport Mobile and Platform
+#### December 2013 - September 2017
 
 * Grew a team of 2 to 45 engineers, coaching leaders into managers and recruiting/hiring outside talent
 * Led the adoption of development practices of DevOps across Nike, continuous delivery, infrastructure automation on AWS, observability, code and design reviews, agile practices like Kanban and Scrum and developer collaboration, across Nike
@@ -71,8 +74,9 @@ December 2013 - September 2017
 * Led the mobile engineering and activity platform teams, who deliver Nike Run Club, Nike Training Club and supporting website and  platforms, managing terabytes of consumer activity data for millions of customers
 * Spoke at AWS re:Invent on behalf of Nike in front of hundreds of developers
 
-## Whitepages Inc./Hiya, Engineering Manager, Mobile
-April 2011 - December 2013
+## Whitepages Inc./Hiya
+### Engineering Manager, Mobile
+#### April 2011 - December 2013
 
 * Ran Whitepages mobile engineering, delivering 4 core iOS and Android apps WhitePages, Localicious, Current Caller ID (now Hiya), and Mr. Number, along with the supporting platforms in a hybrid AWS/Data Center environment
 * Helped build the Whitepages Budapest office, coaching and managing work for the engineers in that location
@@ -81,15 +85,17 @@ April 2011 - December 2013
 * Managed technical due-diligence of the software and teams for 2 acquisitions, Mr. Number and xAD 411
 * Recruited and trained summer college interns
 
-## MySpace Inc., Development Manager, Architect, Lead Engineer
-August 2006 - April 2011
+## MySpace Inc.
+### Development Manager, Architect, Lead Engineer
+#### August 2006 - April 2011
 
 * Built and grew MySpace’s first satellite office in Seattle from 0 to 80 engineers, recruiting and interviewing, providing technical training, and ship major projects
 * Ran the MySpace Mail team, managing 10 engineers rebuilding the platform to scale to support 70mm emails a day and bring in $40m in revenue
 * Ran the MySpace Events team, managing 10 engineers which rewrote the platform for the MySpace relaunch and scaled to 10m MAUs
 * Spoke at Google I/O on behalf of MySpace in front of hundreds of developers
 
-## Vulcan Inc., Software Engineer
+## Vulcan Inc.
+#### Software Engineer
 February 2002 - August 2006
 
 * Developed UI software that was used in the film Hard Candy (credited)

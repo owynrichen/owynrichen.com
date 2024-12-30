@@ -2,7 +2,26 @@ body > main > article.list-article {
     flex: 1 1 30vw;
     width: 30vw;
     transition: all 0.5s ease-in-out;
-	/* animation: linear articleReveal both; */
+    animation: swing-in-bottom-fwd cubic-bezier(0.175, 0.885, 0.320, 1.275) both;
+    animation-timeline: --reveal-article;
+
+	/* Tweak range when effect should run*/
+	animation-range: entry 40% cover 80%;
+    view-timeline-name: --reveal-article;
+	view-timeline-axis: block;
+}
+
+@keyframes swing-in-bottom-fwd {
+    0% {
+      transform: rotateX(100deg);
+      transform-origin: bottom;
+      opacity: 0;
+    }
+    100% {
+      transform: rotateX(0);
+      transform-origin: bottom;
+      opacity: 1;
+    }
 }
 
 article.list-article > header > h2 {
@@ -14,10 +33,14 @@ article.list-article > header > h2 {
     margin: -0.25em 0em 0.5em 0em;
 }
 
-article.list-article > header > section {
+article.list-article > section {
     text-align: left;
     display: block;
     font-size: 1em;
+}
+
+article.list-article > section > h1 {
+    font-family: "Covered by Your Grace", sans-serif;
 }
 
 
