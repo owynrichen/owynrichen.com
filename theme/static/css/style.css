@@ -1,6 +1,7 @@
 :root {
     --scroll: 0;
     --light-color: #ccd;
+    --light-accent: #eef;
     --light-color-alternate: #667;
     --dark-color: #334;
     --heading-background: #112;
@@ -35,7 +36,6 @@ header#top_header {
     justify-content: center;
     text-align: center;
     flex-direction: column;
-    mask-image: linear-gradient(rgba(from var(--heading-background) r g b / 1.0) 80%, rgba(from var(--heading-background) r g b / 0) 100%);
     position: fixed;
     top: 0;
     left: 0;
@@ -75,9 +75,140 @@ header#top_header > nav ul li + li::before {
     content: " | ";
 }
 
+svg#head_svg {
+    position: fixed;
+    top: 2.2vh;
+    left: -3vw;
+    width: 3vw;
+    height: 3vh;
+    z-index: -1;
+    fill: var(--light-color);
+    transform: rotate(-8deg);
+}
+
+svg#head_svg path#gear {
+    animation: rotateGear 5s linear infinite;
+}
+
+svg#head_svg path#bulb {
+    fill: var(--light-accent);
+    animation: flicker 20s ease-in infinite forwards;
+}
+
+@keyframes rotateGear {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+@keyframes flicker {
+    0% {
+        transform: scale(0.1);
+        opacity: 0;
+        fill: var(--light-accent);
+    }
+    45% {
+        transform: scale(0.1);
+        opacity: 0;
+        fill: var(--light-accent);
+    }
+    47% {
+        transform: scale(1.2);
+        opacity: 1;
+        fill: var(--light-color);
+    }
+    50%,60% {
+        transform: scale(1.0);
+        opacity: 1;
+        fill: var(--light-accent);
+    }
+    61% {
+        transform: rotate(-6deg);
+    }
+    62% {
+        transform: rotate(6deg);
+    }
+    63% {
+        transform: rotate(-3.6deg);
+    }
+    64% {
+        transform: rotate(2.4deg);
+    }
+    65% {
+        transform: rotate(-1.2deg);
+    }
+    66% {
+        transform: rotate(0.8deg);
+    }
+    67%, 70% {
+        transform: scale(1.0);
+        opacity: 1;
+        fill: var(--light-accent);
+    }
+    71% {
+        transform: rotate(-6deg);
+    }
+    72% {
+        transform: rotate(6deg);
+    }
+    73% {
+        transform: rotate(-3.6deg);
+    }
+    74% {
+        transform: rotate(2.4deg);
+    }
+    75% {
+        transform: rotate(-1.2deg);
+    }
+    76% {
+        transform: rotate(0.8deg);
+    }
+    77%, 80% {
+        transform: scale(1.0);
+        opacity: 1;
+        fill: var(--light-accent);
+    }
+    81% {
+        transform: rotate(-6deg);
+    }
+    82% {
+        transform: rotate(6deg);
+    }
+    83% {
+        transform: rotate(-3.6deg);
+    }
+    84% {
+        transform: rotate(2.4deg);
+    }
+    85% {
+        transform: rotate(-1.2deg);
+    }
+    86% {
+        transform: rotate(0.8deg);
+    }
+    87%, 90% {
+        transform: scale(1.0);
+        opacity: 1;
+        fill: var(--light-accent);
+    }
+    98% {
+        transform: scale(0.8);
+        opacity: 0.8;
+        fill: var(--light-color);
+    }
+    100% {
+        transform: scale(0.1);
+        opacity: 0;
+        fill: var(--light-accent);
+    }
+}
 
 body > main {
-    padding: 10 6vh;
+    padding: 5vh 0;
     display: flex;
     flex-flow: row wrap;
     justify-content: space-evenly;
@@ -117,13 +248,15 @@ body > footer {
     width: 100%;
 }
 
-body > main > h2 {
+body > main > h2,
+body > main > article > header > h2 {
     width: 90vw;
     text-align: left;
-    margin: -0.5em 1em 0.2em 1em;
+    margin: -0.25em 0em 0.5em 0em;
     display: block;
     font-size: 5em;
-    font-family: "Rubik Mono One", sans-serif;
+    text-transform: uppercase;
+    font-family: "League Gothic", sans-serif;
 }
 
 body > main > article {
@@ -133,19 +266,6 @@ body > main > article {
     border-radius: 0.5em;
     perspective: 1000px;
     box-shadow: 0.2em 0.2em 5em 0 rgba(255,255,255,0.5), -0.2em -0.2em 5em 0 rgba(0,0,0,0.5);
-}
-
-article > header > h2 {
-    text-align: left;
-    display: block;
-    font-size: 1.4em;
-    font-family: "Rubik Mono One", sans-serif;
-}
-
-article > header > section {
-    text-align: left;
-    display: block;
-    font-size: 1em;
 }
 
 article > footer {

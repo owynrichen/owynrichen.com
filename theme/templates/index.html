@@ -4,14 +4,14 @@
         <link rel="stylesheet" type="text/css" href="{{ SITEURL }}/theme/css/index.css" />
 {% endblock %}
 
-<!-- {% block content %}
+{% block content %}
     {% block content_title %}
         <h2>All articles</h2>
     {% endblock %}
 
 
     {% for article in articles_page.object_list %}
-        <article>
+        <article class="list-article">
             <header> <h2><a href="{{ SITEURL }}/{{ article.url }}" rel="bookmark" title="Permalink to {{ article.title|striptags }}">{{ article.title }}</a></h2> </header>
             <section>{{ article.summary }}</section>
             <footer>
@@ -29,7 +29,7 @@
         {% include 'pagination.html' %}
     {% endif %}
 
-{% endblock content %} -->
+{% endblock content %}
 
 {% block extra_body %}
     <canvas id="c"></canvas>
