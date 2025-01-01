@@ -49,7 +49,9 @@ class Plane extends THREE.Mesh {
         this.position.set(position.x, position.y, position.z);
         this.scale.multiplyScalar(MESH_SCALE);
 
+        this.trackPoints = [];
         this.startPosition = position.clone();
+        this.trackPoints.push(this.startPosition);
 
         this.orientToTrackAndAltitude();
 
@@ -82,6 +84,25 @@ class Plane extends THREE.Mesh {
         return { latitude, longitude, radius };
     }
 
+    drawTrack() {
+        if (this.trackLine) return;
+
+        this.trackPoints.push(this.position.clone());
+        const geometry = new THREE.BufferGeometry().setFromPoints(this.trackPoints);
+        const material = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 1 });
+        this.trackLine = new THREE.Line(geometry, material);
+        this.parent.add(this.trackLine);
+    }
+
+    hideTrack() {
+        if (this.trackLine) {
+            this.parent.remove(this.trackLine);
+            this.trackLine.geometry.dispose();
+            this.trackLine.material.dispose();
+            this.trackLine = null;
+        }
+    }
+
     highlight(duration = 1) {
         if (this.highlighted) return;
 
@@ -94,6 +115,10 @@ class Plane extends THREE.Mesh {
         this.material.emissive.setHex(0xffffff);
         this.material.emissiveIntensity = 1;
         const bColor = this.materialBackup.emissive;
+
+        this.drawTrack();
+
+        gsap.to(this.trackLine.material, {opacity: 0, duration: duration * 2, onComplete: () => { this.hideTrack(); }});
         gsap.to(this.material.emissive, {r: bColor.r, g: bColor.g, b: bColor.b, duration: duration});
         gsap.to(this.scale, {x: this.scaleBackup.x, y: this.scaleBackup.y, z: this.scaleBackup.z, duration: duration});
         gsap.to(this.material, {emissiveIntensity: this.materialBackup.emissiveIntensity, duration: duration});
@@ -142,6 +167,11 @@ class Plane extends THREE.Mesh {
         let newPosition = this.position.clone();
         newPosition.add(direction.multiplyScalar(vel));
         this.position.copy(this.sphere.clampPoint(newPosition, newPosition));
+
+        // update the track points
+        if (vel > 0 && this.trackPoints.length < this.distance * 100) {
+            this.trackPoints.push(this.position.clone());
+        }
 
         this.orientToTrackAndAltitude();
     }
