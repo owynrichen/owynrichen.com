@@ -83,7 +83,7 @@ class Starfield extends THREE.Group {
 
     twinkleStep(delta) {
         this.children.forEach(star => {
-//            this.updateStarBrightness(star, delta);
+            this.updateStarBrightness(star, delta);
         });
     }
 }

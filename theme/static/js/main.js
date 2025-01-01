@@ -1,9 +1,10 @@
 import * as THREE from 'three';
-import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import { Starfield } from './Starfield.js';
 import { Earth } from './Earth.js';
 import { Sun } from './Sun.js';
 import { Planes, Plane } from './Planes.js';
+import { Picker } from './Picker.js';
+import { TrackingCameraControls } from './TrackingCameraControls.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
@@ -51,14 +52,6 @@ composer.addPass( new OutputPass() );
 
 resizeRendererToDisplaySize(renderer, camera, composer);
 
-const controls = new OrbitControls(camera, canvas);
-controls.target.set(0, 0, 0);
-controls.enableDamping = true;
-controls.update();
-controls.addEventListener('change', (e) => {
-    console.log(camera);
-});
-
 window.addEventListener('scroll', () => {
     document.body.style.setProperty(
         '--scroll',
@@ -75,12 +68,68 @@ scene.add(starfield);
 const earth = new Earth();
 scene.add(earth);
 
+const controls = new TrackingCameraControls(camera, canvas, earth.position, scene, true);
+controls.enableDamping = true;
+controls.update();
+controls.addEventListener('change', (e) => {
+    // console.log(camera);
+});
+
 const sun = new Sun();
 scene.add(sun);
 
 const planes = new Planes();
 earth.add(planes);
-planes.loadPlanes();
+
+planes.loadPlanes(() => {
+    // controls.cursor.set(planes.planes["N563VW"].position);
+    // controls.trackTo(planes.planes["N563VW"]);
+    // controls.trackTo(planes.planes["N563VW"], () => {
+    //     return planes.planes["N563VW"].getPointAtAltitudeAbove(150000);
+    // }, 2);
+});
+
+controls.addTrackingFinishedListener((controls) => {
+    if (controls.targetObject3D.isPlane) {
+        const plane = controls.targetObject3D;
+        plane.highlight(10);
+    }
+    // setTimeout(() => {
+    //     const newPlane = planes.getRandomPlane();
+    //     controls.trackTo(newPlane);
+    //     // controls.trackTo(newPlane, () => {
+    //     //         return newPlane.getPointAtAltitudeAbove(150000);
+    //     // }, 2);
+    // }, 5000);
+});
+
+const picker = new Picker(camera, scene, renderer);
+picker.mouseMoveEvents.push((event, picker) => {
+    const intersects = picker.getIntersects();
+    for (let i = 0; i < intersects.length; i++) {
+        if (intersects[i].object.isPlane) {
+            const plane = intersects[i].object;
+            plane.highlight();
+            break;
+        }
+    }
+});
+
+picker.clickEvents.push((event, picker) => {
+    const intersects = picker.getIntersects();
+    if (intersects.length > 0) {
+        for (let i = 0; i < intersects.length; i++) {
+            if (intersects[i].object.isPlane) {
+                const plane = intersects[i].object;
+                plane.highlight(10);
+                console.log(`clicked on plane: ${plane.name}`);
+                // controls.trackTo(plane);
+                // controls.trackTo(plane, () => { return plane.getPointAtAltitudeAbove(150000) }, 2);
+                break;
+            }
+        }
+    }
+});
 
 // animation
 
@@ -104,8 +153,7 @@ function animate( time ) {
     if (planes != null) {
         planes.flyHeadings(delta);
         if (planes.planes["N563VW"] != null) {
-            const pos = planes.planes["N563VW"].position;
-            controls.target.set(pos.x, pos.y, pos.z);
+            // controls.lookAt(planes.planes["N563VW"]);
         }
     }
 

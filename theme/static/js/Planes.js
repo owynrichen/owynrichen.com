@@ -27,7 +27,10 @@ class Plane extends THREE.Mesh {
     constructor(data, material = Plane.material) {
         super();
         this.copy(planeMesh, true);
+        this.isPlane = true;
+
         this.material = material;
+        this.highlighted = false;
 
         this.data = data;
 
@@ -39,12 +42,13 @@ class Plane extends THREE.Mesh {
         this.distance = 0;
         this.velocity = data["vel"];
         this.track = data["track"];
-    
-        this.sphere = new THREE.Sphere(new THREE.Vector3(), 1 + this.data["alt"] * ALT_FACTOR);
+        this.altitude = data["alt"];
+
+        this.sphere = new THREE.Sphere(new THREE.Vector3(), 1 + this.altitude * ALT_FACTOR);
         const position = this.latLongToVector3(this.data["lat"], this.data["lon"], 1, this.data["alt"] * ALT_FACTOR);
         this.position.set(position.x, position.y, position.z);
         this.scale.multiplyScalar(MESH_SCALE);
-        
+
         this.startPosition = position.clone();
 
         this.orientToTrackAndAltitude();
@@ -58,28 +62,67 @@ class Plane extends THREE.Mesh {
     latLongToVector3(latitude, longitude, radius, height) {
         var phi = (latitude)*Math.PI/180;
         var theta = (longitude-180)*Math.PI/180;
-    
+
         var x = -(radius+height) * Math.cos(phi) * Math.cos(theta);
         var y = (radius+height) * Math.sin(phi);
         var z = (radius+height) * Math.cos(phi) * Math.sin(theta);
-    
+
         return new THREE.Vector3(x,y,z);
+    }
+
+    vector3ToLatLong(vector3) {
+        // TODO: unit test this
+        const radius = vector3.length();
+        const phi = Math.acos(vector3.y / radius);
+        const theta = Math.atan2(vector3.z, vector3.x);
+
+        const latitude = phi * 180 / Math.PI;
+        const longitude = (theta * 180 / Math.PI) + 180;
+
+        return { latitude, longitude, radius };
+    }
+
+    highlight(duration = 1) {
+        if (this.highlighted) return;
+
+        console.log(`highlighted: ${this.data["tail"]} ${this.position.toArray()}`);
+        this.highlighted = true;
+        this.scaleBackup = this.scale.clone();
+        this.scale.multiplyScalar(3);
+        this.materialBackup = this.material;
+        this.material = this.material.clone();
+        this.material.emissive.setHex(0xffffff);
+        this.material.emissiveIntensity = 1;
+        const bColor = this.materialBackup.emissive;
+        gsap.to(this.material.emissive, {r: bColor.r, g: bColor.g, b: bColor.b, duration: duration});
+        gsap.to(this.scale, {x: this.scaleBackup.x, y: this.scaleBackup.y, z: this.scaleBackup.z, duration: duration});
+        gsap.to(this.material, {emissiveIntensity: this.materialBackup.emissiveIntensity, duration: duration});
+        gsap.to(this, {highlighted: false, duration: duration, delay: 1, onComplete: () => {
+            console.log(`highlighted complete ${this.data["tail"]}`) ;
+            this.material = this.materialBackup;
+            this.highlighted = false;
+        }});
+    }
+
+    getPointAtAltitudeAbove(altitude) {
+        const normal = this.position.clone().sub(new THREE.Vector3()).normalize();
+        return normal.multiplyScalar(altitude * ALT_FACTOR);
     }
 
     orientToTrackAndAltitude() {
         // setup to 'fly' on earth curve
-        const normal = this.position.clone().sub(new THREE.Vector3()).normalize(); // calculate normal vector
+        const normal = this.position.clone().sub(new THREE.Vector3()).normalize(); // calculate normal vector from the unit sphere
         let quaternion = new THREE.Quaternion(); // do quaternion math and convert to Euler units
         quaternion.setFromUnitVectors(this.up, normal);
         let euler = new THREE.Euler();
         euler.setFromQuaternion(quaternion);
         this.rotation.setFromVector3(euler);
-    
+
         // now rotate around the Y axis based on the plane's track
         // Create a quaternion for the rotation
         let trackQ = new THREE.Quaternion();
         trackQ.setFromAxisAngle(new THREE.Vector3(0, 1, 0), this.track * Math.PI / 180);
-    
+
         // // Apply the quaternion to the object
         this.quaternion.multiply(trackQ);
     }
@@ -140,11 +183,11 @@ class PlaneN563VWGrounded extends PlaneN563VW {
 class Planes extends THREE.Group {
     constructor() {
         super();
-        
+
         this.planes = {};
     }
 
-    loadPlanes() {
+    loadPlanes(onComplete = () => {}) {
         const scope = this;
 
         console.log("fetching planes...")
@@ -171,13 +214,14 @@ class Planes extends THREE.Group {
                 }
 
                 console.log("planes fetched");
+                onComplete();
             });
         }, (error) => {
             console.log("error fetching planes");
             console.log(error);
         });
     }
-     
+
     addPlane(plane) {
         this.planes[plane.tail] = plane;
         this.add(plane);
@@ -187,6 +231,11 @@ class Planes extends THREE.Group {
         for (const [tail,plane] of Object.entries(this.planes)) {
             plane.flyHeading(delta);
         }
+    }
+
+    getRandomPlane() {
+        const keys = Object.keys(this.planes);
+        return this.planes[keys[ keys.length * Math.random() << 0]];
     }
 }
 

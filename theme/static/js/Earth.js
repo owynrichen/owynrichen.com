@@ -5,7 +5,7 @@ import { gsap } from 'gsap';
 class Earth extends THREE.Group {
     constructor(
         rotationBase = 110,
-        rotationSpeed = 0.01,
+        rotationSpeed = 0.005,
         tilt = 0.41,
         position = new THREE.Vector3(-2,0,2)
     ) {
@@ -93,13 +93,16 @@ class Earth extends THREE.Group {
             gsap.to(earthNightMat, {opacity: 1, duration: 2});
             gsap.to(cloudMat, {opacity: 0.8, duration: 2});
             gsap.to(atmosMat, {opacity: 0.8, duration: 2});
-            gsap.to(atmosMat.uniforms.fresnelBias, {value: 0.2, duration: 2});
+            gsap.to(atmosMat.uniforms.fresnelBias, {value: 0.1, duration: 2});
         }
         )
     }
 
     rotationStep(delta) {
         this.rotation.y += (delta * this.rotationSpeed);
+        const clouds = this.getObjectByName("clouds")
+        clouds.rotation.y -= (delta * this.rotationSpeed * 1.5);
+        clouds.rotation.z += (delta * this.rotationSpeed * 1.3);
     }
 }
 
