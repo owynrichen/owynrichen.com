@@ -131,7 +131,8 @@ class Plane extends THREE.Mesh {
 
     getPointAtAltitudeAbove(altitude) {
         const normal = this.position.clone().sub(new THREE.Vector3()).normalize();
-        return normal.multiplyScalar(altitude * ALT_FACTOR);
+        const newPoint = normal.multiplyScalar(1 + (this.altitude + altitude) * ALT_FACTOR);
+        return newPoint;
     }
 
     orientToTrackAndAltitude() {

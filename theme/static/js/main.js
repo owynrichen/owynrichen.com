@@ -34,8 +34,9 @@ scene.fog = new THREE.FogExp2( 0x000000, 0.00000025 );
 const canvas = document.querySelector('#c');
 
 const camera = new THREE.PerspectiveCamera( 70, canvas.clientWidth / canvas.clientHeight, 0.01, 1e7 );
-camera.position.set(-2.5906304864660354, 0.6315778092534803, 1.0078201455690863);
-camera.rotation.set(-1.7502224774749415, -1.257885472271306, -1.7591697371977346, "XYZ");
+camera.position.set(-20, 10, -10);
+// camera.position.set(-2.5906304864660354, 0.6315778092534803, 1.0078201455690863);
+// camera.rotation.set(-1.7502224774749415, -1.257885472271306, -1.7591697371977346, "XYZ");
 
 const renderer = new THREE.WebGLRenderer( { alpha: true, antialias: true, canvas } );
 renderer.toneMapping = THREE.ReinhardToneMapping;
@@ -70,10 +71,19 @@ scene.add(earth);
 
 const controls = new TrackingCameraControls(camera, canvas, earth.position, scene, true);
 controls.enableDamping = true;
-controls.update();
 controls.addEventListener('change', (e) => {
     // console.log(camera);
 });
+
+const initialTrack = new THREE.CatmullRomCurve3([
+    new THREE.Vector3(-20, 10, -10),
+    new THREE.Vector3(-5, -2, 1.0078201455690863),
+    new THREE.Vector3(-2.5906304864660354, 0.6315778092534803, 1.0078201455690863)
+]);
+
+controls.target.copy(earth.position);
+controls.update();
+controls.trackVia(initialTrack, null, 5);
 
 const sun = new Sun();
 scene.add(sun);
@@ -90,10 +100,14 @@ planes.loadPlanes(() => {
 });
 
 controls.addTrackingFinishedListener((controls) => {
-    if (controls.targetObject3D.isPlane) {
+    if (controls.targetObject3D !== null && controls.targetObject3D.isPlane) {
         const plane = controls.targetObject3D;
         plane.highlight(10);
+    } else {
+        // controls.lookAtObject3D(earth);
+        // controls.autoRotate = true;
     }
+    console.log("tracking finished");
     // setTimeout(() => {
     //     const newPlane = planes.getRandomPlane();
     //     controls.trackTo(newPlane);
@@ -124,7 +138,7 @@ picker.clickEvents.push((event, picker) => {
                 plane.highlight(10);
                 console.log(`clicked on plane: ${plane.name}`);
                 // controls.trackTo(plane);
-                // controls.trackTo(plane, () => { return plane.getPointAtAltitudeAbove(150000) }, 2);
+                controls.trackTo(plane, () => { return plane.getPointAtAltitudeAbove(750000) }, 2);
                 break;
             }
         }

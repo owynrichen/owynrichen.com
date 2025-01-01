@@ -120,20 +120,29 @@ class TrackingCameraControls extends OrbitControls {
     }
 
     trackTo(targetObject3D, getOffsetFunction = () => { return new THREE.Vector3() }, duration = 2) {
+        const start = this.object.position.clone();
+        const offset = getOffsetFunction();
+        const end = targetObject3D.localToWorld(offset.clone());
+        // const end = targetObject3D.position.clone();
+        const mid = start.clone().lerp(end, 0.5);
+        console.log(`trackTo: ${start.toArray()}, ${mid.toArray()} ${end.toArray()}`);
+        const trackingCurve = new THREE.CatmullRomCurve3([start, mid, end]);
+
+        this.trackVia(trackingCurve, targetObject3D, duration);
+    }
+
+    trackVia(trackingCurve, targetObject3D = null, duration = 2) {
         if (this.moving) {
             return;
         }
 
         this.track0 = this.track.clone();
-        const start = this.object.position.clone();
-        // const end = targetObject3D.getWorldPosition(getOffsetFunction());
-        const end = targetObject3D.position.clone();
-        const mid = start.clone().lerp(end, 0.5);
-        console.log(`trackTo: ${start.toArray()}, ${mid.toArray()} ${end.toArray()}`);
-        this.track = new THREE.CatmullRomCurve3([start, mid, end]);
+        this.track = trackingCurve;
+        console.log(`trackVia: ${duration}`);
         this.lookAtObject3D(targetObject3D);
         this._startTracking(duration);
     }
+
 
     _startTracking(duration = DEFAULT_DURATION) {
         console.log(`startTracking: ${duration}`);
@@ -151,7 +160,7 @@ class TrackingCameraControls extends OrbitControls {
         console.log('finishTracking');
         this.moving = false;
         this.currentTime = this.duration;
-        this.target = this.targetCenter.clone();
+        // this.target = this.targetCenter.clone();
         // this.target.set(this.targetObject3D.position.x, this.targetObject3D.position.y, this.targetObject3D.position.z);
         this.clearHelper();
 
