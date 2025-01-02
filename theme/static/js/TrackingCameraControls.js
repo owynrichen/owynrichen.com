@@ -39,20 +39,6 @@ class TrackingCameraControls extends OrbitControls {
         this.trackingFinished.push(listener);
     }
 
-    drawCameraTrackSphereHelper() {
-        if (this.enableHelper && this.cameraTrackSphereHelper === undefined) {
-            const geometry = new THREE.SphereGeometry(DEFAULT_RADIUS, 32, 32);
-            const wireframe = new THREE.WireframeGeometry(geometry);
-            this.cameraTrackSphereHelper = new THREE.LineSegments(wireframe);
-            // this.cameraTrackSphereHelper.material.depthTest = false;
-            this.cameraTrackSphereHelper.material.opacity = 0.25;
-            this.cameraTrackSphereHelper.material.transparent = true;
-            this.cameraTrackSphereHelper.material.color.set(0x00ff00);
-            this.cameraTrackSphereHelper.position.copy(this.target);
-            this.scene.add(this.cameraTrackSphereHelper);
-        }
-    }
-
     drawHelper() {
         if (this.enableHelper) {
             this.clearHelper();
@@ -60,16 +46,12 @@ class TrackingCameraControls extends OrbitControls {
             const material = new THREE.LineBasicMaterial({ color: 0xff0000 });
             this.trackHelper = new THREE.Line(geometry, material);
             this.scene.add(this.trackHelper);
-            // this.drawCameraTrackSphereHelper();
         }
     }
 
     clearHelper() {
-        // if (this.trackHelper)
-        //     this.scene.remove(this.trackHelper);
-
-        // if (this.cameraTrackSphereHelper)
-        //     this.scene.remove(this.cameraTrackSphereHelper);
+        if (this.trackHelper)
+            this.scene.remove(this.trackHelper);
     }
 
     enableHelper() {
@@ -121,10 +103,20 @@ class TrackingCameraControls extends OrbitControls {
 
     trackTo(targetObject3D, getOffsetFunction = () => { return new THREE.Vector3() }, duration = 2) {
         const start = this.object.position.clone();
+        const startSpherical = new THREE.Spherical(start.length()).setFromVector3(start);
+        startSpherical.makeSafe()
         const offset = getOffsetFunction();
-        const end = targetObject3D.localToWorld(offset.clone());
-        // const end = targetObject3D.position.clone();
-        const mid = start.clone().lerp(end, 0.5);
+        // WTF is wrong with me, of course I need to convert the offset to world coordinates of the parent...
+        const end = targetObject3D.parent.localToWorld(offset);
+        const endSpherical = new THREE.Spherical(end.length()).setFromVector3(end);
+        endSpherical.makeSafe();
+
+        // this is a hack to make the camera track the object around the earth
+        // the math is wrong and it does odd things sometimes... still fun tho
+        const midPhi = (startSpherical.phi + endSpherical.phi) / 2;
+        const midTheta = (startSpherical.theta + endSpherical.theta) / 2;
+        const mid = new THREE.Vector3().setFromSpherical(new THREE.Spherical(end.length(), midPhi, midTheta));
+        // const mid = start.clone().lerp(end, 0.5);
         console.log(`trackTo: ${start.toArray()}, ${mid.toArray()} ${end.toArray()}`);
         const trackingCurve = new THREE.CatmullRomCurve3([start, mid, end]);
 

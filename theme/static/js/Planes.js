@@ -94,6 +94,22 @@ class Plane extends THREE.Mesh {
         this.parent.add(this.trackLine);
     }
 
+    drawNormalHelper() {
+        if (this.normalLine) return;
+
+        const normal = this.position.clone().sub(new THREE.Vector3()).normalize();
+        this.normalLine = new THREE.ArrowHelper(normal, this.position, 0.5, 0xff0000);
+        this.parent.add(this.normalLine);
+    }
+
+    drawTrackHelper() {
+        if (this.trackHelper) return;
+        const point = this.getPointAtAltitudeAbove(60000);
+        const length = this.position.distanceTo(point);
+        this.trackHelper = new THREE.ArrowHelper(point.normalize(), this.position, length, 0x00ff00);
+        this.parent.add(this.trackHelper);
+    }
+
     hideTrack() {
         if (this.trackLine) {
             this.parent.remove(this.trackLine);
@@ -101,12 +117,22 @@ class Plane extends THREE.Mesh {
             this.trackLine.material.dispose();
             this.trackLine = null;
         }
+
+        if (this.trackHelper) {
+            this.parent.remove(this.trackHelper);
+            this.trackHelper = null;
+        }
+
+        if (this.normalLine) {
+            this.parent.remove(this.normalLine);
+            this.normalLine = null;
+        }
     }
 
     highlight(duration = 1) {
         if (this.highlighted) return;
 
-        console.log(`highlighted: ${this.data["tail"]} ${this.position.toArray()}`);
+        console.log(`highlighted: ${this.data["tail"]} ${this.position.toArray()} ${this.getPointAtAltitudeAbove(60000).toArray()}`);
         this.highlighted = true;
         this.scaleBackup = this.scale.clone();
         this.scale.multiplyScalar(3);
@@ -117,6 +143,8 @@ class Plane extends THREE.Mesh {
         const bColor = this.materialBackup.emissive;
 
         this.drawTrack();
+        // this.drawNormalHelper();
+        // this.drawTrackHelper();
 
         gsap.to(this.trackLine.material, {opacity: 0, duration: duration * 2, onComplete: () => { this.hideTrack(); }});
         gsap.to(this.material.emissive, {r: bColor.r, g: bColor.g, b: bColor.b, duration: duration});
@@ -131,7 +159,7 @@ class Plane extends THREE.Mesh {
 
     getPointAtAltitudeAbove(altitude) {
         const normal = this.position.clone().sub(new THREE.Vector3()).normalize();
-        const newPoint = normal.multiplyScalar(1 + (this.altitude + altitude) * ALT_FACTOR);
+        const newPoint = normal.multiplyScalar(1 + altitude * ALT_FACTOR);
         return newPoint;
     }
 

@@ -69,7 +69,7 @@ scene.add(starfield);
 const earth = new Earth();
 scene.add(earth);
 
-const controls = new TrackingCameraControls(camera, canvas, earth.position, scene, true);
+const controls = new TrackingCameraControls(camera, canvas, earth.position, scene, false);
 controls.enableDamping = true;
 controls.addEventListener('change', (e) => {
     // console.log(camera);
@@ -92,29 +92,28 @@ const planes = new Planes();
 earth.add(planes);
 
 planes.loadPlanes(() => {
-    // controls.cursor.set(planes.planes["N563VW"].position);
-    // controls.trackTo(planes.planes["N563VW"]);
     // controls.trackTo(planes.planes["N563VW"], () => {
-    //     return planes.planes["N563VW"].getPointAtAltitudeAbove(150000);
+    //     return planes.planes["N563VW"].getPointAtAltitudeAbove(60000);
     // }, 2);
+});
+
+controls.addTrackingStartedListener((controls) => {
+    console.log(camera);
 });
 
 controls.addTrackingFinishedListener((controls) => {
     if (controls.targetObject3D !== null && controls.targetObject3D.isPlane) {
         const plane = controls.targetObject3D;
         plane.highlight(10);
-    } else {
-        // controls.lookAtObject3D(earth);
-        // controls.autoRotate = true;
     }
+
     console.log("tracking finished");
-    // setTimeout(() => {
-    //     const newPlane = planes.getRandomPlane();
-    //     controls.trackTo(newPlane);
-    //     // controls.trackTo(newPlane, () => {
-    //     //         return newPlane.getPointAtAltitudeAbove(150000);
-    //     // }, 2);
-    // }, 5000);
+    setTimeout(() => {
+        const newPlane = planes.getRandomPlane();
+        controls.trackTo(newPlane, () => {
+                return newPlane.getPointAtAltitudeAbove(60000);
+        }, 2);
+    }, 5000);
 });
 
 const picker = new Picker(camera, scene, renderer);
@@ -137,8 +136,7 @@ picker.clickEvents.push((event, picker) => {
                 const plane = intersects[i].object;
                 plane.highlight(10);
                 console.log(`clicked on plane: ${plane.name}`);
-                // controls.trackTo(plane);
-                controls.trackTo(plane, () => { return plane.getPointAtAltitudeAbove(750000) }, 2);
+                controls.trackTo(plane, () => { return plane.getPointAtAltitudeAbove(60000) }, 2);
                 break;
             }
         }
@@ -166,9 +164,6 @@ function animate( time ) {
 
     if (planes != null) {
         planes.flyHeadings(delta);
-        if (planes.planes["N563VW"] != null) {
-            // controls.lookAt(planes.planes["N563VW"]);
-        }
     }
 
     controls.update(delta);
