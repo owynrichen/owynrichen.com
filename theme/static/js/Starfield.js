@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { gsap } from 'gsap';
 
 class Starfield extends THREE.Group {
-    constructor(radius = 6371) {
+    constructor(starSize = 3, radius = 6000) {
         super();
 
         // TODO: I ported this from somewhere, add where in this comment...
@@ -40,9 +40,9 @@ class Starfield extends THREE.Group {
         this.starsGeometry[ 1 ].setAttribute( 'position', new THREE.Float32BufferAttribute( vertices2, 3 ) );
 
         this.starsMaterials = [
-            new THREE.PointsMaterial( { color: 0x9c9c9c, transparent: true, opacity: 0 } ),
-            new THREE.PointsMaterial( { color: 0x838383, transparent: true, opacity: 0 } ),
-            new THREE.PointsMaterial( { color: 0x5a5a5a, transparent: true, opacity: 0 } )
+            new THREE.PointsMaterial( { color: 0x9c9c9c, transparent: true, opacity: 0, size: starSize } ),
+            new THREE.PointsMaterial( { color: 0x838383, transparent: true, opacity: 0, size: starSize } ),
+            new THREE.PointsMaterial( { color: 0x5a5a5a, transparent: true, opacity: 0, size: starSize } )
         ];
 
         for ( let i = 10; i < 30; i ++ ) {
@@ -82,9 +82,9 @@ class Starfield extends THREE.Group {
     }
 
     twinkleStep(delta) {
-        this.children.forEach(star => {
-            this.updateStarBrightness(star, delta);
-        });
+        // this.children.forEach(star => {
+        //     this.updateStarBrightness(star, delta);
+        // });
     }
 }
 

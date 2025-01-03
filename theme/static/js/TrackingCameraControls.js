@@ -116,8 +116,7 @@ class TrackingCameraControls extends OrbitControls {
         const midPhi = (startSpherical.phi + endSpherical.phi) / 2;
         const midTheta = (startSpherical.theta + endSpherical.theta) / 2;
         const mid = new THREE.Vector3().setFromSpherical(new THREE.Spherical(end.length(), midPhi, midTheta));
-        // const mid = start.clone().lerp(end, 0.5);
-        console.log(`trackTo: ${start.toArray()}, ${mid.toArray()} ${end.toArray()}`);
+        // console.log(`trackTo: ${start.toArray()}, ${mid.toArray()} ${end.toArray()}`);
         const trackingCurve = new THREE.CatmullRomCurve3([start, mid, end]);
 
         this.trackVia(trackingCurve, targetObject3D, duration);
@@ -130,14 +129,14 @@ class TrackingCameraControls extends OrbitControls {
 
         this.track0 = this.track.clone();
         this.track = trackingCurve;
-        console.log(`trackVia: ${duration}`);
+        // console.log(`trackVia: ${duration}`);
         this.lookAtObject3D(targetObject3D);
         this._startTracking(duration);
     }
 
 
     _startTracking(duration = DEFAULT_DURATION) {
-        console.log(`startTracking: ${duration}`);
+        // console.log(`startTracking: ${duration}`);
         this.duration = duration;
         this.currentTime = 0;
         this.moving = true;
@@ -149,7 +148,7 @@ class TrackingCameraControls extends OrbitControls {
     }
 
     _finishTracking() {
-        console.log('finishTracking');
+        // console.log('finishTracking');
         this.moving = false;
         this.currentTime = this.duration;
         // this.target = this.targetCenter.clone();

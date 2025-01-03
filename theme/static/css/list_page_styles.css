@@ -48,14 +48,3 @@ body > main > article.list-article:hover {
     transform: scale(1.1) rotateX(5deg) rotateY(5deg);
     /* animation: hoverArticle 0.5s ease-in-out infinite alternate; */
 }
-
-@keyframes articleReveal {
-	from {
-		opacity: 0;
-		clip-path: inset(45% 20% 45% 20%);
-	}
-	to {
-		opacity: 1;
-		clip-path: inset(0% 0% 0% 0%);
-	}
-}

@@ -16,8 +16,13 @@ I am a private pilot and I love planes, so I thought it might be fun to incorpor
 There is a wealth of realtime data out there for active flights, so I started digging in with that.
 
 <style>
+#plane-container {
+    width: 80%;
+    position: relative;
+}
+
 #c {
-    width: 80vw;
+    width: 100%;
     aspect-ratio: 16/9;
     z-index: 1;
     border: solid 3px var(--heading-background);
@@ -26,7 +31,18 @@ There is a wealth of realtime data out there for active flights, so I started di
 }
 </style>
 <div style="width: 100%; text-align: center">
-    <canvas id="c"></canvas>
+    <div id="plane-container">
+        <canvas id="c">
+        </canvas>
+        <section id="plane-details">
+            <h1 id="plane-tail-number"></h1>
+            <p>Starting Position: <span id="plane-start-position"></span></p>
+            <p>Current Position: <span id="plane-current-position"></span></p>
+            <p>Heading: <span id="plane-heading"></span></p>
+            <p>Speed: <span id="plane-speed"></span></p>
+            <p>Altitude: <span id="plane-altitude"></span></p>
+        </section>
+    </div>
 </div>
 
 OUTLINE

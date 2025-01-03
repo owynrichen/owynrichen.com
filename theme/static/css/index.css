@@ -1,6 +1,6 @@
 @import 'list_page_styles.css';
 
-#c {
+#plane-container {
     position: fixed;
     width: 100%;
     height: 100%;
@@ -8,12 +8,19 @@
     top: 0;
     z-index: 1;
     border: none;
-    /* pointer-events: none; */
-    /* mask: linear-gradient(rgba(1, 1, 1, 1) var(--CanvasFadeStart), rgba(0, 0, 0, 0) 100%); */
-    animation: scrollHomeCanvas 1s linear 1 calc(var(--scroll) * -1s) both paused;
+    animation: scrollHomeContainer 1s linear 1 calc(var(--scroll) * -1s) both paused;
 }
 
-@keyframes scrollHomeCanvas {
+#c {
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    border: none; 
+}
+
+@keyframes scrollHomeContainer {
     0% {
         height: 100%;
         z-index: 1;

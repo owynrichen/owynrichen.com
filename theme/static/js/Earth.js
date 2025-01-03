@@ -4,7 +4,7 @@ import { gsap } from 'gsap';
 
 class Earth extends THREE.Group {
     constructor(
-        rotationBase = 110,
+        rotationBase = 130,
         rotationSpeed = 0.005,
         tilt = 0.41,
         position = new THREE.Vector3(-2,0,2)

@@ -9,6 +9,9 @@ const VELOCITY_FACTOR = 0.00001;
 // scale down the mesh
 const MESH_SCALE = 0.00015;
 
+const MINIMUM_VELOCITY = 30;
+const MINIMUM_ALTITUDE = 750;
+
 const gltfLoader = new GLTFLoader();
 const planeGLTF = await gltfLoader.loadAsync('/theme/3d/low_poly_jet2/scene.gltf');
 const meshes = planeGLTF.scene.getObjectsByProperty("isMesh", true);
@@ -44,8 +47,8 @@ class Plane extends THREE.Mesh {
         this.track = data["track"];
         this.altitude = data["alt"];
 
-        this.sphere = new THREE.Sphere(new THREE.Vector3(), 1 + this.altitude * ALT_FACTOR);
-        const position = this.latLongToVector3(this.data["lat"], this.data["lon"], 1, this.data["alt"] * ALT_FACTOR);
+        this.sphere = new THREE.Sphere(new THREE.Vector3(), 1 + (2000 + this.altitude) * ALT_FACTOR);
+        const position = this.latLongToVector3(this.data["lat"], this.data["lon"], 1, (2000 + this.data["alt"]) * ALT_FACTOR);
         this.position.set(position.x, position.y, position.z);
         this.scale.multiplyScalar(MESH_SCALE);
 
@@ -61,6 +64,18 @@ class Plane extends THREE.Mesh {
         }})
     }
 
+    getStartingLatLong() {
+        return this.vector3ToLatLong(this.startPosition);
+    }
+
+    getCurrentLatLong() {
+        return this.vector3ToLatLong(this.position);
+    }
+
+    latLongToString(latLong) {
+        return `${latLong.latitude.toFixed(2)}°, ${latLong.longitude.toFixed(2)}°`;
+    }
+
     latLongToVector3(latitude, longitude, radius, height) {
         var phi = (latitude)*Math.PI/180;
         var theta = (longitude-180)*Math.PI/180;
@@ -74,14 +89,14 @@ class Plane extends THREE.Mesh {
 
     vector3ToLatLong(vector3) {
         // TODO: unit test this
-        const radius = vector3.length();
-        const phi = Math.acos(vector3.y / radius);
-        const theta = Math.atan2(vector3.z, vector3.x);
+        const norm = vector3.clone().normalize();
+        const phi = Math.asin(norm.y);
+        const theta = Math.atan2(norm.z, norm.x);
 
-        const latitude = phi * 180 / Math.PI;
-        const longitude = (theta * 180 / Math.PI) + 180;
+        const latitude = phi * (180 / Math.PI);
+        const longitude = -(theta * (180 / Math.PI));
 
-        return { latitude, longitude, radius };
+        return { latitude, longitude };
     }
 
     drawTrack() {
@@ -132,7 +147,7 @@ class Plane extends THREE.Mesh {
     highlight(duration = 1) {
         if (this.highlighted) return;
 
-        console.log(`highlighted: ${this.data["tail"]} ${this.position.toArray()} ${this.getPointAtAltitudeAbove(60000).toArray()}`);
+        // console.log(`highlighted: ${this.data["tail"]} ${this.position.toArray()} ${this.getPointAtAltitudeAbove(60000).toArray()}`);
         this.highlighted = true;
         this.scaleBackup = this.scale.clone();
         this.scale.multiplyScalar(3);
@@ -151,7 +166,7 @@ class Plane extends THREE.Mesh {
         gsap.to(this.scale, {x: this.scaleBackup.x, y: this.scaleBackup.y, z: this.scaleBackup.z, duration: duration});
         gsap.to(this.material, {emissiveIntensity: this.materialBackup.emissiveIntensity, duration: duration});
         gsap.to(this, {highlighted: false, duration: duration, delay: 1, onComplete: () => {
-            console.log(`highlighted complete ${this.data["tail"]}`) ;
+            // console.log(`highlighted complete ${this.data["tail"]}`) ;
             this.material = this.materialBackup;
             this.highlighted = false;
         }});
@@ -256,6 +271,7 @@ class Planes extends THREE.Group {
             resp_jsonP.then((resp_json) => {
                 const p = resp_json["planes"];
                 let n563vw_flying = false;
+                let filtered_planes = 0;
 
                 for(var i = 0; i < p.length; i++) {
                     const planeData = p[i];
@@ -263,7 +279,12 @@ class Planes extends THREE.Group {
                         n563vw_flying = true;
                         scope.addPlane(new PlaneN563VW(planeData));
                     } else {
-                        scope.addPlane(new Plane(planeData))
+                        if (planeData["vel"] > MINIMUM_VELOCITY && planeData["alt"] > MINIMUM_ALTITUDE) {
+                            scope.addPlane(new Plane(planeData));
+                        } else {
+                            filtered_planes++;
+                            // console.log(`plane ${planeData["tail"]} too slow (${planeData["vel"]} < ${MINIMUM_VELOCITY}) or too low (${planeData["alt"]} < ${MINIMUM_ALTITUDE}), filtering out`);
+                        }
                     }
                 }
 
@@ -272,7 +293,7 @@ class Planes extends THREE.Group {
                     scope.addPlane(new PlaneN563VWGrounded());
                 }
 
-                console.log("planes fetched");
+                console.log(`planes fetched and loaded (${p.length - filtered_planes}/${p.length} planes)`);
                 onComplete();
             });
         }, (error) => {

@@ -32,7 +32,17 @@
 {% endblock content %}
 
 {% block extra_body %}
-    <canvas id="c"></canvas>
+    <div style="width: 100%;" id="plane-container">
+        <canvas id="c"></canvas>
+        <section id="plane-details">
+            <h1 id="plane-tail-number"></h1>
+            <p>Starting Position: <span id="plane-start-position"></span></p>
+            <p>Current Position: <span id="plane-current-position"></span></p>
+            <p>Heading: <span id="plane-heading"></span></p>
+            <p>Speed: <span id="plane-speed"></span></p>
+            <p>Altitude: <span id="plane-altitude"></span></p>
+        </section>
+    </div>
     <script type="importmap">
     {
         "imports": {

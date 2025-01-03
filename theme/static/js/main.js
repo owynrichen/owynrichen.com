@@ -10,6 +10,11 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { FilmPass } from 'three/addons/postprocessing/FilmPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+import { FXAAShader } from 'three/addons/shaders/FXAAShader.js'
+import { gsap } from 'gsap';
+
+const fxaaPass = new ShaderPass(FXAAShader);
 
 function resizeRendererToDisplaySize(renderer, camera, composer) {
     const canvas = renderer.domElement;
@@ -22,6 +27,9 @@ function resizeRendererToDisplaySize(renderer, camera, composer) {
         camera.aspect = width / height;
         camera.updateProjectionMatrix();
         composer.setSize(width, height);
+
+        fxaaPass.material.uniforms[ 'resolution' ].value.x = 1 / width;
+        fxaaPass.material.uniforms[ 'resolution' ].value.y = 1 / height;
     }
     return needResize;
 }
@@ -32,6 +40,7 @@ const scene = new THREE.Scene();
 scene.fog = new THREE.FogExp2( 0x000000, 0.00000025 );
 
 const canvas = document.querySelector('#c');
+
 
 const camera = new THREE.PerspectiveCamera( 70, canvas.clientWidth / canvas.clientHeight, 0.01, 1e7 );
 camera.position.set(-20, 10, -10);
@@ -48,8 +57,9 @@ const composer = new EffectComposer(renderer);
 const renderPass = new RenderPass( scene, camera );
 composer.addPass( renderPass );
 composer.addPass( new UnrealBloomPass( new THREE.Vector2( canvas.clientWidth, canvas.clientHeight ), 1, 1, 1 ) );
-composer.addPass( new FilmPass(0.5) );
 composer.addPass( new OutputPass() );
+composer.addPass( fxaaPass );
+composer.addPass( new FilmPass(0.1) );
 
 resizeRendererToDisplaySize(renderer, camera, composer);
 
@@ -63,7 +73,7 @@ window.addEventListener('scroll', () => {
 
 const clock = new THREE.Clock();
 
-const starfield = new Starfield(6000);
+const starfield = new Starfield();
 scene.add(starfield);
 
 const earth = new Earth();
@@ -97,17 +107,35 @@ planes.loadPlanes(() => {
     // }, 2);
 });
 
+function highlightPlane(plane, duration = 2) {
+    const planeDetails = document.querySelector("#plane-details");
+    if (planeDetails !== null) {
+        planeDetails.style.setProperty("opacity", 0);
+        planeDetails.querySelector("#plane-tail-number").innerText = plane.name;
+        const startLatLong = plane.getStartingLatLong();
+        const currentLatLong = plane.getCurrentLatLong();
+        const storedLatLong = { "latitude": plane.data["lat"], "longitude": plane.data["lon"] };
+        planeDetails.querySelector("#plane-start-position").innerText = plane.latLongToString(startLatLong);
+        planeDetails.querySelector("#plane-current-position").innerText = plane.latLongToString(storedLatLong);
+        planeDetails.querySelector("#plane-speed").innerText = plane.velocity + " knots";
+        planeDetails.querySelector("#plane-altitude").innerText = plane.altitude + " ft";
+        planeDetails.querySelector("#plane-heading").innerText = plane.track + "°";
+        gsap.to(planeDetails.style, {opacity: 1, duration: 0.5});
+    }
+    plane.highlight(duration);
+}
+
 controls.addTrackingStartedListener((controls) => {
-    console.log(camera);
+    // console.log(camera);
 });
 
 controls.addTrackingFinishedListener((controls) => {
     if (controls.targetObject3D !== null && controls.targetObject3D.isPlane) {
         const plane = controls.targetObject3D;
-        plane.highlight(10);
+        highlightPlane(plane, 10);
     }
 
-    console.log("tracking finished");
+    // console.log("tracking finished");
     setTimeout(() => {
         const newPlane = planes.getRandomPlane();
         controls.trackTo(newPlane, () => {
@@ -122,7 +150,7 @@ picker.mouseMoveEvents.push((event, picker) => {
     for (let i = 0; i < intersects.length; i++) {
         if (intersects[i].object.isPlane) {
             const plane = intersects[i].object;
-            plane.highlight();
+            highlightPlane(plane);
             break;
         }
     }
@@ -134,7 +162,7 @@ picker.clickEvents.push((event, picker) => {
         for (let i = 0; i < intersects.length; i++) {
             if (intersects[i].object.isPlane) {
                 const plane = intersects[i].object;
-                plane.highlight(10);
+                highlightPlane(plane, 10);
                 console.log(`clicked on plane: ${plane.name}`);
                 controls.trackTo(plane, () => { return plane.getPointAtAltitudeAbove(60000) }, 2);
                 break;
