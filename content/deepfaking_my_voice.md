@@ -38,7 +38,9 @@ on my desktop via a webpage.
     <br />
     <label for="voice_name">Speaker: </label>
     <select id="voice_name">
-        <option value="owyntest2">Owyn [poor]</option>
+        <option value="owyntest2">Owyn2</option>
+        <option value="owyntest3">Owyn3</option>
+        <option value="owyntest4">Owyn4</option>
         <option value="en_speaker_0">Speaker 0</option>
         <option value="en_speaker_1">Speaker 1</option>
         <option value="en_speaker_2">Speaker 2</option>
