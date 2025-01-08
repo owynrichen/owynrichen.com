@@ -78,9 +78,9 @@ Daily Cloud textures: https://github.com/matteason/live-cloud-maps?tab=readme-ov
 
 ### What's Left?
 
-* One piece of work I have left to do is to show the "Night" material on the dark side of the Earth.
+- One piece of work I have left to do is to show the "Night" material on the dark side of the Earth.
 That'll require a custom shader and I had other things I wanted to get after first.
-* I also don't really like how the clouds show up, they could 'pop' more.  We'll see if I come back to these.
+- I also don't really like how the clouds show up, they could 'pop' more.  We'll see if I come back to these.
 
 # Javascript Organization
 
@@ -94,7 +94,7 @@ care, you can look at this [commit log](https://github.com/owynrichen/owynrichen
 ## Code Refactoring
 
 This began when I wanted to add the 'atmosphere' to the Earth, and I found it was done a few ways online
-already.  The way I thought was the nicest was using a custom, shader-based Fresnel material that I ported
+already. The way I thought was the nicest was using a custom, shader-based Fresnel material that I ported
 found [here](https://github.com/beagas/Earth-Visualization-React).  I pulled it over but ported it so it
 didn't require React and fit the coding style.  [MeshFresnelMaterial](https://github.com/owynrichen/owynrichen.com/blob/main/theme/static/js/MeshFresnelMaterial.js) was borne from that.
 
@@ -117,14 +117,14 @@ or when the timer fires.  It has a few bugs but is mostly decent.
 
 ### What's Left?
 
-* As mentioned above, if I tackle some of the texture work (like the night textures), it'll require JS changes.
-* It could due with some optimization of draw calls and more general optimization.
-* There are a few bugs in TrackingCameraControls. The biggest one is in [trackTo()](https://github.com/owynrichen/owynrichen.com/blob/main/theme/static/js/TrackingCameraControls.js#L114).
-** It attempts to generate a CatmullRomCurve3 with 3 points around the sphere but fails miserably when going
+- As mentioned above, if I tackle some of the texture work (like the night textures), it'll require JS changes.
+- It could due with some optimization of draw calls and more general optimization.
+- There are a few bugs in TrackingCameraControls. The biggest one is in [trackTo()](https://github.com/owynrichen/owynrichen.com/blob/main/theme/static/js/TrackingCameraControls.js#L114).
+    - It attempts to generate a CatmullRomCurve3 with 3 points around the sphere but fails miserably when going
 too far around the world, so it flies through the Earth sometimes.
-* The FXAA post processing filter blurs away most of the stars, I should either switch them from Points to
+- The FXAA post processing filter blurs away most of the stars, I should either switch them from Points to
 real geometry or explore alternatives.
-* Additionally, I should add unit tests (sigh).
+- Additionally, I should add unit tests (sigh).
 
 # Incorporating Planes
 
@@ -163,13 +163,13 @@ registering data at any given time, so there is a fair bit of data. Processing i
 caused me to routinely hit those CPU limits, causing requests to fail.
 
 Because of this, the wrapper does a few things:
-* Restructures the data from a multidimentional array to a dictionary. This actually increases the size
+- Restructures the data from a multidimentional array to a dictionary. This actually increases the size
 but makes it easier to manage as JSON.
-* Filters out planes who have the "on_ground" flag checked. This flag isn't perfect, so we do some subsequent
+- Filters out planes who have the "on_ground" flag checked. This flag isn't perfect, so we do some subsequent
 filtering later.
-* Stores the data in pre-processed and post-processed states in the [Cloudflare Work KV](https://developers.cloudflare.com/kv/)
+- Stores the data in pre-processed and post-processed states in the [Cloudflare Work KV](https://developers.cloudflare.com/kv/)
 store.
-** It stores a cache timestamp as a separate key and if it's < 1 hour old it returns KV values.
+    - It stores a cache timestamp as a separate key and if it's < 1 hour old it returns KV values.
 This prevents both hitting the OpenSky throttling limits and helps with the Cloudflare Worker CPU limit issues.
 
 ### CORS
@@ -215,7 +215,7 @@ a *much* lower-poly mesh. [lowpoly_plane.blend](https://github.com/owynrichen/ow
 ## N563VW
 
 This is my plane. I wanted to highlight it specially when it was flying and have it show up
-even on the ground. To encapsulate all of these things I have a [custom set of classes](https://github.com/owynrichen/owynrichen.com/blob/main/theme/static/js/Planes.js#L224) that inherit from 
+even on the ground. To encapsulate all of these things I have a [custom set of classes](https://github.com/owynrichen/owynrichen.com/blob/main/theme/static/js/Planes.js#L224) that inherit from
 Plane and change the Material/Scale and store KHIO's lat/long if it's not in the list (meaning not in the
 air) or filtered because it's on the ground.
 
@@ -256,7 +256,8 @@ class PlaneN563VWGrounded extends PlaneN563VW {
 
 # Cloudflare Products and Architecture
 
-TODO: Document Cloudflare architecture in more detail
+TODO: Document Cloudflare architecture in more detail - testing out mermaid in Markdown
+
 ~~~mermaid
 architecture-beta
     group api(cloud)[API]
