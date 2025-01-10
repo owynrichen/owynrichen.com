@@ -4,7 +4,7 @@ Category: Leadership
 Tags: Musings
 Slug: leadership-musings-jan-2025
 Authors: Owyn Richen
-Status: draft
+Status: published
 
 # Why Post This?
 
@@ -74,5 +74,63 @@ push to get the organization on-board with it.
 
 # Driving to Engineering Maturity
 
-TODO - talk about DORA/DevSecOps/etc
-talk about constraint management and goals/maturity assessments
+To build and maintain a highly mature technology team, the place I tend to start is with [DORA-centric metrics](https://services.google.com/fh/files/misc/2024_final_dora_report.pdf).
+With respect to establishing strategies for improvement, where to focus is dependent on the specific team issues.
+
+At the foundation, continuous delivery (and deployment) are critical drivers to focus teams on fast customer
+feedback.  If the team isn't doing that, getting them to do that is first order priority, as CD is all about
+risk amortization.
+
+Here's a chart showing how deploying slowly increases risk we put in front of customers because lots of
+risk gets realized at once.
+
+~~~mermaid
+xychart-beta
+    title "Waterfall Change/Risk Graph"
+    x-axis "Cumulative Changes" 1 --> 100
+    y-axis "Unrealized Risks (line) Released Risk (bar)" 1 --> 50
+    bar [0, 0, 0, 0, 0, 50, 0, 0, 30, 0]
+    line [10, 20, 30, 40, 50, 10, 20, 30, 10, 20]
+~~~
+
+Here's how CD amortizes that same risk over time, lowering the impact to customers.
+
+~~~mermaid
+xychart-beta
+    title "CD Change/Risk Graph"
+    x-axis "Cumulative of Changes" 1 --> 100
+    y-axis "Unrealized Risks (line) Releases (bar)" 1 --> 150
+    bar [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
+    line [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
+~~~
+
+Generally, though, here's where I'd start focusing (assuming CD practices and infra are in-place).
+
+- Change Lead Time
+    - If lead time is due to latency in requirements, coordinate with product/architecture to focus
+    on the size of the tickets and break down requirements
+    - If lead time is due to delays in execution in the eng team overall, start with task complexity, but examine with the team the system complexity too.
+    - If it's a specific individual who is dragging, coordinate with them individually to coach them up or out.
+- Deployment Frequency
+    - If the team doesn't follow CD as a practice, discuss and remediate the reasons why (canary measurement)
+    - If CD is being followed, as above, start with task and system simplification
+- Failure Percentage
+    - Ultimately the root here is most likely centered in lack of good automated testing.
+        - Unit test coverage and build/deployment failure on misses is table-stakes so is a good place to start, but not sufficent alone for complex systems.
+        - Canary deployment strategy or other live-routing strategies (blue/green) would be the next place to target coupled with customer-centric metrics for assessment/promition (vs basic system health metrics only), as it focuses the team on customers.
+            - This also demands the team think 'operations-first' with on-call, alarms/etc
+        - Lastly, to reduce MTTD/MTTR, a suite of automated continuous integration testing in production is typically required for complex system journeys, so edge case risks can be vetted.
+    of this.
+- Change failure recovery time (including escaped defects)
+    - Deployment strategies is the first place to look here. The best way to recover a failed deployment
+    is limiting traffic to it via Canary so customer impact is limited, and rollback if it doesn't work.
+    - In cases where a change 'failure' is more of an unintended side-effect of a feature release/etc, loading
+    those types of features in an experimentation framework with feature flagging is the right mitigation.
+
+# Building Teams
+
+TODO
+
+# Growing Teammates
+
+TODO
