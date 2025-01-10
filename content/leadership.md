@@ -110,7 +110,7 @@ Generally, though, here's where I'd start focusing (assuming CD practices and in
     - If lead time is due to latency in requirements, coordinate with product/architecture to focus
     on the size of the tickets and break down requirements
     - If lead time is due to delays in execution in the eng team overall, start with task complexity, but examine with the team the system complexity too.
-    - If it's a specific individual who is dragging, coordinate with them individually to coach them up or out.
+    - If it's a specific individual who is dragging, coordinate with them individually to coach them up or out, perhaps using a framework like [SPACE](https://queue.acm.org/detail.cfm?id=3454124)
 - Deployment Frequency
     - If the team doesn't follow CD as a practice, discuss and remediate the reasons why (canary measurement)
     - If CD is being followed, as above, start with task and system simplification
@@ -120,7 +120,6 @@ Generally, though, here's where I'd start focusing (assuming CD practices and in
         - Canary deployment strategy or other live-routing strategies (blue/green) would be the next place to target coupled with customer-centric metrics for assessment/promition (vs basic system health metrics only), as it focuses the team on customers.
             - This also demands the team think 'operations-first' with on-call, alarms/etc
         - Lastly, to reduce MTTD/MTTR, a suite of automated continuous integration testing in production is typically required for complex system journeys, so edge case risks can be vetted.
-    of this.
 - Change failure recovery time (including escaped defects)
     - Deployment strategies is the first place to look here. The best way to recover a failed deployment
     is limiting traffic to it via Canary so customer impact is limited, and rollback if it doesn't work.
