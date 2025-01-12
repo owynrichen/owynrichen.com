@@ -63,11 +63,33 @@ composer.addPass( new FilmPass(0.1) );
 
 resizeRendererToDisplaySize(renderer, camera, composer);
 
+window.addEventListener('load', () => {
+    const topHeader = document.querySelector("#top_header");
+    const mainContent = document.querySelector("#main_content");
+
+    const height = 1 * (topHeader.offsetHeight + mainContent.offsetHeight);
+
+    document.body.style.setProperty(
+        '--min-height',
+        height + "px"
+    );
+}, false);
+
+// resize on window resize
+window.addEventListener('resize', () => {
+    resizeRendererToDisplaySize(renderer, camera, composer);
+}
+, false);
+
+// resize on scroll
 window.addEventListener('scroll', () => {
+    const scrollHeight = 1 * (document.body.offsetHeight - window.innerHeight);
+
     document.body.style.setProperty(
         '--scroll',
-        window.scrollY / (document.body.offsetHeight - window.innerHeight)
+        window.scrollY / scrollHeight
     );
+
     resizeRendererToDisplaySize(renderer, camera, composer);
 }, false);
 

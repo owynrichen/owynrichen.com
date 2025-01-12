@@ -256,20 +256,33 @@ class PlaneN563VWGrounded extends PlaneN563VW {
 
 # Cloudflare Products and Architecture
 
-TODO: Document Cloudflare architecture in more detail - testing out mermaid in Markdown
-
 ~~~mermaid
+---
+title: Cloudflare Pages/Worker Architecture
+config:
+  theme: neutral
+  look: handDrawn
+  architecture:
+    iconSize: 40
+    fontSize: 12
+---
 architecture-beta
-    group api(cloud)[API]
+    group pages(logos:cloudflare-icon)[Pages]
+    group api(logos:cloudflare-workers-icon)[API]
 
-    service db(database)[Database] in api
-    service disk1(disk)[Storage] in api
-    service disk2(disk)[Storage] in api
-    service server(server)[Server] in api
+    service user(hugeicons:location-user-01)[User]
 
-    db:L -- R:server
-    disk1:T -- B:server
-    disk2:T -- B:db
+    service page(logos:cloudflare-icon)[owynrichen dot com] in pages
+
+    service worker_api(logos:cloudflare-workers-icon)[Worker API] in api
+    service kv_store(logos:cloudflare-workers-icon)[Worker KV Store] in api
+
+    service opensky(hugeicons:airplane-02)[OpenSky Network]
+
+    user:R --> L:page
+    user:B --> T:worker_api
+    worker_api:R <--> L:kv_store
+    worker_api:B --> T:opensky
 ~~~
 
 
@@ -283,3 +296,17 @@ architecture-beta
 }
 </script>
 <script type="module" src="/theme/js/main.js"></script>
+<script type="module" language="javascript">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+mermaid.registerIconPacks([
+  {
+    name: 'logos',
+    loader: () => fetch('https://unpkg.com/@iconify-json/logos@1/icons.json').then((res) => res.json()),
+  },
+  {
+    name: 'hugeicons',
+    loader: () => fetch('https://unpkg.com/@iconify-json/hugeicons@1/icons.json').then((res) => res.json()),
+  }
+]);
+mermaid.initialize({ startOnLoad: true });
+</script>

@@ -6,6 +6,7 @@
     --dark-color: #334;
     --heading-background: #112;
     --body-background: #ccc;
+    --min-height: 500vh;
 }
 
 html {
@@ -23,10 +24,10 @@ body {
     font-size : 100% ;
     background-color : var(--body-background);
     color: var(--dark-color);
-    min-width : 400px ;
-    min-height : 500vh;
+    min-width : 400px;
+    min-height : var(--min-height);
     margin: 0;
-    display : block ;
+    display : block;
     height: 100%;
 }
 
@@ -552,6 +553,10 @@ input[type="submit"] {
 
 input[type="submit"]:hover {
     background-color: indigo;
+}
+
+input[type="submit"]:active {
+    background-color: darkblue;
 }
 
 textarea {
