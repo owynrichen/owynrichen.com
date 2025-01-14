@@ -11,3 +11,5 @@ cd ../
 poetry install
 
 poetry run pelican content -t ./theme
+
+cp -r output buildscripts/
