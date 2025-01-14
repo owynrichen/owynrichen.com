@@ -352,6 +352,10 @@ a:visited {
     text-decoration : none;
 }
 
+article a {
+    font-weight: bold;
+}
+
 @keyframes aLinkHover {
     from {
         opacity: 1.0;
