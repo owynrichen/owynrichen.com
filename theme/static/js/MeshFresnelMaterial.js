@@ -9,9 +9,9 @@ class MeshFresnelMaterial extends THREE.ShaderMaterial {
       const uniforms = {
           color1: { value: new THREE.Color(rimHex) },
           color2: { value: new THREE.Color(facingHex) },
-          fresnelBias: { value: 0.1 },
+          fresnelBias: { value: 0.01 },
           fresnelScale: { value: 1.0 },
-          fresnelPower: { value: 4.0 },
+          fresnelPower: { value: 8.0 },
         };
         const vs = `
         uniform float fresnelBias;
@@ -49,7 +49,7 @@ class MeshFresnelMaterial extends THREE.ShaderMaterial {
           vertexShader: vs,
           fragmentShader: fs,
           transparent: true,
-          opacity: 0.9,
+          opacity: 0.7,
           blending: THREE.AdditiveBlending,
         });
   }

@@ -18,7 +18,12 @@ MARKDOWN = {
         'markdown.extensions.extra': {},
         'markdown.extensions.meta': {},
         'markdown.extensions.toc': {},
-        'markdown_mermaidjs': {},
+        'markdown_mermaidjs': {
+            'icon_packs': {
+                'logos' : 'https://unpkg.com/@iconify-json/logos@1/icons.json',
+                'hugeicons' : 'https://unpkg.com/@iconify-json/hugeicons@1/icons.json'
+            }
+        },
 
     },
     'output_format': 'html5',

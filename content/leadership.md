@@ -110,7 +110,7 @@ Generally, though, here's where I'd start focusing (assuming CD practices and in
     - If lead time is due to latency in requirements, coordinate with product/architecture to focus
     on the size of the tickets and break down requirements
     - If lead time is due to delays in execution in the eng team overall, start with task complexity, but examine with the team the system complexity too.
-    - If it's a specific individual who is dragging, coordinate with them individually to coach them up or out, perhaps using a framework like [SPACE](https://queue.acm.org/detail.cfm?id=3454124)
+    - If it's a specific individual who is dragging, coordinate with them individually to coach them up or out, perhaps using a framework like [SPACE](https://queue.acm.org/detail.cfm?id=3454124).
 - Deployment Frequency
     - If the team doesn't follow CD as a practice, discuss and remediate the reasons why (canary measurement)
     - If CD is being followed, as above, start with task and system simplification

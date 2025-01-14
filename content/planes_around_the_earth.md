@@ -78,8 +78,6 @@ Daily Cloud textures: https://github.com/matteason/live-cloud-maps?tab=readme-ov
 
 ### What's Left?
 
-- One piece of work I have left to do is to show the "Night" material on the dark side of the Earth.
-That'll require a custom shader and I had other things I wanted to get after first.
 - I also don't really like how the clouds show up, they could 'pop' more.  We'll see if I come back to these.
 
 # Javascript Organization
@@ -115,9 +113,110 @@ I also created [TrackingCameraControls](https://github.com/owynrichen/owynrichen
 That is what enables the 'fly in' at the beginning plus the movement to look at new planes when you click,
 or when the timer fires.  It has a few bugs but is mostly decent.
 
+### Day/Night Texture
+
+There are a lot of simple shaders that showcase how to selectively mix between a day/night texture.
+See [here](https://sangillee.com/2024-06-07-create-realistic-earth-with-shaders/), or [here](https://github.com/pyshadi/globe-threejs/blob/main/src/globe.js) or [here](https://stackoverflow.com/questions/10644236/adding-night-lights-to-a-webgl-three-js-earth) for a few.
+
+The challenge I had with these is I was already using a ```MeshPhysicalMaterial``` and liked how it was
+working with specular and height maps/etc. I opted to use this as an exercise to learn a little more
+about the GLSL for that material and replace key areas in ```onBeforeCompile()```.
+
+The fragment shader is pretty complex, but I opted to replace features of the ```map``` and eventually also
+```emissiveMap```.
+
+Basically, this involved finding includes and and replacing them with the existing contents of the shader
+plus extra stuff.
+
+[MeshPhysicalMaterial's glsl](https://github.com/mrdoob/three.js/blob/dev/src/renderers/shaders/ShaderLib/meshphysical.glsl.js) is pretty complex, but well organized.
+
+Here's the snippet of the particular material replacement. The 3 includes I'm replacing are:
+
+- [map_pars_fragment](https://github.com/mrdoob/three.js/blob/dev/src/renderers/shaders/ShaderChunk/map_pars_fragment.glsl.js)
+which contains the parmeters for the map, extending it with the nightMap uniform.
+- [map_fragment](https://github.com/mrdoob/three.js/blob/dev/src/renderers/shaders/ShaderChunk/map_fragment.glsl.js) - where I'm getting the direction of the 'sun' (the first PointLight) in the Scene, and stealing
+some math from other tutorials to interpolate the intensity.
+- [emmisivemap_fragment](https://github.com/mrdoob/three.js/blob/dev/src/renderers/shaders/ShaderChunk/emissivemap_fragment.glsl.js) - I'm doing similar interpolation so the 'lights' I'm overlaying as an emissiveMap only show up on the night side of Earth.
+
+```javascript
+const earthMat = new THREE.MeshPhysicalMaterial({
+                map: mapTex,
+                bumpMap: bumpTex,
+                bumpScale: 10,
+                specularIntensity: 1,
+                specularIntensityMap: specTex,
+                roughness: 0.5,
+                roughnessMap: specTex,
+                metalness: 0.2,
+                metalnessMap: specTex,
+                opacity: 0,
+                transparent: true,
+                emissiveMap: emissiveMapTex,
+                emissive: new THREE.Color(0xffffaa),
+                emissiveIntensity: 0.5,
+            });
+
+earthMat.onBeforeCompile = (shader) => {
+                shader.uniforms.nightMap = { value: mapNightTex };
+                shader.fragmentShader = shader.fragmentShader.replace("#include <map_pars_fragment>", `
+#ifdef USE_MAP
+
+	uniform sampler2D map;
+    uniform sampler2D nightMap;
+#endif`);
+                shader.fragmentShader = shader.fragmentShader.replace("#include <map_fragment>", `
+#ifdef USE_MAP
+
+    vec3 sunPos = pointLights[0].position;
+    vec3 lVector = sunPos - vViewPosition;
+
+	vec3 sunDir = normalize( lVector );
+    vec3 transformedNormal = normalize(vNormal);
+    float intensity = dot(transformedNormal, sunDir);
+    intensity = 1. / (1. + (exp(-20. * intensity)));  // sigmoid function to increase the contrast
+    intensity = clamp(intensity, -0.05, 1.0);
+    vec4 dayColor = texture2D(map, vMapUv);
+    vec4 nightColor = texture2D(nightMap, vMapUv);
+    vec4 sampledDiffuseColor = mix(nightColor, dayColor, intensity);
+
+	#ifdef DECODE_VIDEO_TEXTURE
+
+		// use inline sRGB decode until browsers properly support SRGB8_ALPHA8 with video textures (#26516)
+
+		sampledDiffuseColor = sRGBTransferEOTF( sampledDiffuseColor );
+
+	#endif
+
+	diffuseColor *= sampledDiffuseColor;
+
+#endif`);
+
+                shader.fragmentShader = shader.fragmentShader.replace("#include <emissivemap_fragment>", `
+#ifdef USE_EMISSIVEMAP
+
+	vec4 emissiveColor = texture2D( emissiveMap, vEmissiveMapUv );
+
+	#ifdef DECODE_VIDEO_TEXTURE_EMISSIVE
+
+		// use inline sRGB decode until browsers properly support SRGB8_ALPHA8 with video textures (#26516)
+
+		emissiveColor = sRGBTransferEOTF( emissiveColor );
+
+	#endif
+    vec4 lightsColor = mix(emissiveColor, vec4(0), intensity);
+
+	totalEmissiveRadiance *= lightsColor.rgb;
+
+#endif
+`);
+                console.log("compiled shader");
+                console.log(shader);
+            };
+```
+
+
 ### What's Left?
 
-- As mentioned above, if I tackle some of the texture work (like the night textures), it'll require JS changes.
 - It could due with some optimization of draw calls and more general optimization.
 - There are a few bugs in TrackingCameraControls. The biggest one is in [trackTo()](https://github.com/owynrichen/owynrichen.com/blob/main/theme/static/js/TrackingCameraControls.js#L114).
     - It attempts to generate a CatmullRomCurve3 with 3 points around the sphere but fails miserably when going
@@ -296,17 +395,3 @@ architecture-beta
 }
 </script>
 <script type="module" src="/theme/js/main.js"></script>
-<script type="module" language="javascript">
-import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
-mermaid.registerIconPacks([
-  {
-    name: 'logos',
-    loader: () => fetch('https://unpkg.com/@iconify-json/logos@1/icons.json').then((res) => res.json()),
-  },
-  {
-    name: 'hugeicons',
-    loader: () => fetch('https://unpkg.com/@iconify-json/hugeicons@1/icons.json').then((res) => res.json()),
-  }
-]);
-mermaid.initialize({ startOnLoad: true });
-</script>

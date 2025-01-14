@@ -11,7 +11,8 @@ package-mode = false
 python = "^3.11"
 pelican = {extras = ["markdown"], version = "^4.10.2"}
 pygments = "^2.19.1"
-markdown-mermaidjs = "^1.0.0"
+# markdown-mermaidjs = "^1.0.0"
+markdown-mermaidjs = {git = "https://github.com/owynrichen/markdown-mermaidjs/", branch = "feature/add_icon_packs"}
 
 
 [build-system]
