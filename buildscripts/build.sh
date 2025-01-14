@@ -8,4 +8,6 @@ poetry --version
 
 cd ../
 
+poetry install
+
 poetry run pelican content -t ./theme
