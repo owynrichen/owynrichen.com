@@ -2,6 +2,7 @@ body > main > article.list-article {
     flex: 1 1 30vw;
     width: 30vw;
     transition: all 0.5s ease-in-out;
+    overflow: hidden;
     animation: swing-in-bottom-fwd cubic-bezier(0.175, 0.885, 0.320, 1.275) both;
     animation-timeline: --reveal-article;
 

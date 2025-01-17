@@ -56,7 +56,7 @@ on my desktop via a webpage.
 sync
 </span>
 </div>
-<script language="javascript" type="module">
+<script language="javascript">
     function playAudio() {
         const prompt = encodeURI(document.querySelector("#prompt").value.trim());
         const voiceName = document.querySelector("#voice_name").value;

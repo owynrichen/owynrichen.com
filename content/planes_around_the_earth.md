@@ -355,7 +355,7 @@ class PlaneN563VWGrounded extends PlaneN563VW {
 
 # Cloudflare Products and Architecture
 
-~~~mermaid
+<!-- ~~~mermaid
 ---
 title: Cloudflare Pages/Worker Architecture
 config:
@@ -382,7 +382,7 @@ architecture-beta
     user:B --> T:worker_api
     worker_api:R <--> L:kv_store
     worker_api:B --> T:opensky
-~~~
+~~~ -->
 
 
 <script type="importmap">
