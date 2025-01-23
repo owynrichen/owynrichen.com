@@ -11,6 +11,8 @@ Status: published
 This post is for me to personally collect my thoughts on key aspects of how I approach technical
 leadership so I can more effectively talk about it when asked.
 
+## Table of Contents
+
 [TOC]
 
 # Leadership Style(s)
@@ -125,11 +127,3 @@ Generally, though, here's where I'd start focusing (assuming CD practices and in
     is limiting traffic to it via Canary so customer impact is limited, and rollback if it doesn't work.
     - In cases where a change 'failure' is more of an unintended side-effect of a feature release/etc, loading
     those types of features in an experimentation framework with feature flagging is the right mitigation.
-
-# Building Teams
-
-TODO
-
-# Growing Teammates
-
-TODO
