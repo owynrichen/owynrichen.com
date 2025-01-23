@@ -9,21 +9,22 @@ Status: published
 # Deepfaking My Voice
 
 I've always loved music production and audio. I've also been interested in the ability of AI/ML
-to clone voices, but hadn't had a chance to really try it out.  The purpose of this project was
-to learn a little more about the options that are out there, and how effective zero-shot learning
+to clone voices, but hadn't had a chance to really try it out. The purpose of this project was
+to learn a little more about the options that are out there, and how effective one-shot learning
 could be.
 
 Additionally, I thought it'd be fun to attempt to run the inference API locally and test out some
-of Cloudflare's ZeroTrust networking capabilities vs. finding some cloud GPU to host it.
+of Cloudflare's ZeroTrust networking capabilities vs. finding some cloud GPU to host these open source models.
 
-The TLDR; is, the results aren't that good with the few different paths I took. That being said,
-it still was interesting to examine the patterns of each and what is missing.
+The TLDR; is, for my open-source attempts: the results aren't that good with the few different paths I took.
+That being said, it still was interesting to examine the patterns of each and what is missing.  My attempt
+with the ElevenLabs API was extremely surprising and impressive, it got the closest I've heard.
 
 ## Table of Contents
 
 [TOC]
 
-# Demo
+# Open Source Models Demo
 
 Here's a demo of the outcome, it's poor at best in both cases.
 
@@ -114,8 +115,32 @@ done because it didn't match my cadence/speech-patterns/etc and therefore still 
 Your browser does not support the audio element.
 </audio>
 
+## ElevenLabs Voice Cloning
 
-# Turning it into an API
+Given the results of the 2 open-source attempts didn't work, I figured I'd give [ElevenLabs](https://elevenlabs.io/) a try for the $5 it'd cost to test out.
+
+I went to Voices > Add a new voice > Instant Voice Clone and used the same one-shot training audio linked above. I added a few tags (accent:American, gender: male, language:English) and a brief description and
+created the voice.
+
+Here's the output compared to a similar prompt examples for the open source models:
+
+<audio controls="true">
+<source src="theme/audio/ElevenLabs_2025-01-23T16_56_51_Owyn Richen_ivc_s50_sb89_se0_b_m2.mp3" type="audio/mpeg" />
+Your browser does not support the audio element.
+</audio>
+
+Crazy! It sounds very much like me.
+
+I haven't wired it into the API yet, but I might do that. Here's the output compared to the default API prompt above.
+
+<audio controls="true">
+<source src="theme/audio/ElevenLabs_2025-01-23T16_43_51_Owyn Richen_ivc_s50_sb75_se0_b_m2.mp3" type="audio/mpeg" />
+Your browser does not support the audio element.
+</audio>
+
+
+
+# Turning The Open Source Models into an API
 
 To enable this little demo, and to test out Cloudflare Zero Trust Tunnels, I wanted to set up this as a
 little API. I run the API locally on my Desktop with my 3-generation-old GPU, and the website has access to it.
