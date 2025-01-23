@@ -131,6 +131,16 @@ There is a little cache that keeps previously generated prompt/voice_name wav fi
 
 ## System Architecture
 
+The API is a pretty simple system.  It uses FastAPI to scaffold up a RESTful API and
+leverages the models under the covers. It stores the generated audio as a WAV on the
+desktop, and serves the file back to the call.
+
+The web client interfaces with the desktop via Cloudflare Zero Trust Tunnels to securely
+expose the API while keeping the rest of the system isolated.
+
+Here's a link to how that works: [Cloudflare Zero Trust Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/), and below is a mermaid
+diagram that outlines a bit more detail about the system as a whole.
+
 ~~~mermaid
 ---
 title: Voice API + Cloudflare Tunnels Architecture
@@ -173,12 +183,18 @@ Given the results are sub-par right now, there are a lot of TODOs here. The firs
 TTS models to see if fine-tuning is better with those. Additionally, I can capture and provide
 more samples with ground-truth transcriptions to go beyond one-shot learning.
 
-# Other SDKs/APIs to Try
+## Other SDKs/APIs to Try
 https://github.com/KoljaB/RealtimeTTS?tab=readme-ov-file#cuda-installation
 https://github.com/KoljaB/RealtimeSTT
 https://github.com/metavoiceio/metavoice-src
 
+## It's Too Slow
 
+Beyond tinkering, the ultimate goal was to recreate a little avatar that can converse, but
+the TTS for this (at least on my RTX 2070) is nowhere near fast enough to be a valid approach.
+
+One of the reasons to try out Realtime TTS (and STT) is to see if that has any performance
+improvements, or if it truly is due to my old video card and I need to upgrade.
 
 <script language="javascript">
     function playAudio() {
@@ -211,11 +227,3 @@ https://github.com/metavoiceio/metavoice-src
             })
     }
 </script>
-
-
-
-https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/
-
-https://github.com/serp-ai/bark-with-voice-clone
-
-https://github.com/suno-ai/bark
