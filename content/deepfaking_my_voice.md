@@ -26,7 +26,8 @@ with the ElevenLabs API was extremely surprising and impressive, it got the clos
 
 # Open Source Models Demo
 
-Here's a demo of the outcome, it's poor at best in both cases.
+Here's a demo of the outcome, it's poor at best in both Open Source model cases (Bark and OpenVoice).  The
+ElevenLabs API integration case sounds really close!
 
 <style>
     #loading {
@@ -52,6 +53,7 @@ Here's a demo of the outcome, it's poor at best in both cases.
     <select id="voice_name">
         <option value="owyntest5">Owyn (Bark)</option>
         <option value="owyn-reference3">Owyn (OpenVoice)</option>
+        <option value="el_Owyn Richen">Owyn (ElevenLabs)</option>
         <option value="en_speaker_0">Bark Speaker 0</option>
         <option value="en_speaker_1">Bark Speaker 1</option>
     </select>
@@ -131,14 +133,17 @@ Your browser does not support the audio element.
 
 Crazy! It sounds very much like me.
 
-I haven't wired it into the API yet, but I might do that. Here's the output compared to the default API prompt above.
-
 <audio controls="true">
 <source src="theme/audio/ElevenLabs_2025-01-23T16_43_51_Owyn Richen_ivc_s50_sb75_se0_b_m2.mp3" type="audio/mpeg" />
 Your browser does not support the audio element.
 </audio>
 
+Here it is wired through the API with the prompt used for others:
 
+<audio controls="true">
+<source src="https://apid.owynrichen.com/speak_as/el_Owyn Richen?prompt='Does this sound like Owyn Richen? I don't think so...Perhaps if I say I am a Bunny it will?'" type="audio/wav" />
+Your browser does not support the audio element.
+</audio>
 
 # Turning The Open Source Models into an API
 
@@ -180,6 +185,7 @@ architecture-beta
     group user(hugeicons:user-group)[User]
     group edge(logos:cloudflare-icon)[Cloudflare Edge]
     group local(server)[Local Machine]
+    group elevenlabs(server)[ElevenLabs dot io]
 
     service user_request1(hugeicons:location-user-01)[User Request 1] in user
     service user_request2(hugeicons:location-user-01)[User Request 2] in user
@@ -193,13 +199,18 @@ architecture-beta
     service audio_cache(disk)[Audio Cache] in local
     service cloudflared(logos:cloudflare-icon)[CloudflareD Tunnel] in local
 
+    service eleventts(server) in elevenlabs
+    junction junctionTop in local
+
     user_request1:R <--> L:page
     user_request2:R --> L:edge_server
     edge_server:R <-- L:cloudflared
     cloudflared:R --> L:fast_api
     fast_api:R <--> L:audio_cache
-    fast_api:T --> B:bark
-    fast_api:B --> T:openvoice
+    fast_api:T --> B:junctionTop
+    junctionTop:L --> R:bark
+    junctionTop:R --> L:openvoice
+    fast_api:B --> T:eleventts
 ~~~
 
 # TODOs
