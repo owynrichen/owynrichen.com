@@ -46,7 +46,7 @@ ElevenLabs API integration case sounds really close!
 </style>
 <div>
     <label for="prompt">Prompt: </label>
-    <textarea id="prompt">I love Charlie, Frankie and Mama.  I also love Bobes and Chew, they are the best doggies.
+    <textarea id="prompt">Voice cloning is pretty neat.  Many of these don't sound like me but the Eleven Labs one is pretty good!
     </textarea>
     <br />
     <label for="voice_name">Speaker: </label>
