@@ -27,7 +27,9 @@ with the ElevenLabs API was extremely surprising and impressive, it got the clos
 # Open Source Models Demo
 
 Here's a demo of the outcome, it's poor at best in both Open Source model cases (Bark and OpenVoice).  The
-ElevenLabs API integration case sounds really close!
+ElevenLabs API integration case sounds really close!  To enable deploying this on my little
+homelab server (that doesn't have a CUDA-compatible GPU), I've disabled the Bark and OpenVoice
+voices.
 
 <style>
     #loading {
@@ -51,11 +53,12 @@ ElevenLabs API integration case sounds really close!
     <br />
     <label for="voice_name">Speaker: </label>
     <select id="voice_name">
-        <option value="owyntest5">Owyn (Bark)</option>
-        <option value="owyn-reference3">Owyn (OpenVoice)</option>
         <option value="el_Owyn Richen">Owyn (ElevenLabs)</option>
-        <option value="en_speaker_0">Bark Speaker 0</option>
-        <option value="en_speaker_1">Bark Speaker 1</option>
+        <option value="el_Rae Richen">Owyn's Mom (ElevenLabs)</option>
+        <option value="owyntest5" disabled="true">Owyn (Bark)</option>
+        <option value="owyn-reference3" disabled="true">Owyn (OpenVoice)</option>
+        <option value="en_speaker_0" disabled="true">Bark Speaker 0</option>
+        <option value="en_speaker_1" disabled="true">Bark Speaker 1</option>
     </select>
     <input id="submit" type="submit" onClick="playAudio()"><span id="loading" class="material-symbols-outlined">
 sync
@@ -74,7 +77,7 @@ transcriptions. I may do this eventually but I'll set this aside for now.
 ## One-Shot Training Audio
 
 To get a feel for my voice, here's the one-shot training audio I used. It was a combination of me reading
-["I am a Bunny" by Ole Risom and Richard Scarry](https://www.goodreads.com/book/show/328439.I_Am_a_Bunny) in 
+["I am a Bunny" by Ole Risom and Richard Scarry](https://www.goodreads.com/book/show/328439.I_Am_a_Bunny) in
 English and (poor) Spanish. Additionally I read a part of the [README of the faster-whisper repo](https://github.com/SYSTRAN/faster-whisper):
 
 <audio controls="true">
@@ -241,7 +244,7 @@ improvements, or if it truly is due to my old video card and I need to upgrade.
         submit.disabled = true;
         const loading = document.querySelector("#loading")
         loading.style.opacity = 1;
-        fetch(`https://apid.owynrichen.com/speak_as/${voiceName}?prompt="${prompt}"`)
+        fetch(`https://voice-api.owynrichen.com/speak_as/${voiceName}?prompt="${prompt}"`)
             .then(response => {
                 if (response.status != 200) {
                     throw new Error(response.body);

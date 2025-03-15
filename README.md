@@ -16,12 +16,12 @@ poetry install
 
 Here's how to build the website with the appropriate theme:
 ```bash
-poetry run pelican content -t .\theme
+poetry run pelican content -t ./theme
 ```
 
 Here's how to run a local version of a server that will autoreload:
 ```bash
-poetry run pelican --autoreload --listen -t .\theme\
+poetry run pelican --autoreload --listen -t ./theme/
 ```
 
 ## Deploying
