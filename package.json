@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "bundle": "node buildscripts/bundle.js"
+    "bundle": "node buildscripts/bundle.mjs"
   },
   "dependencies": {
     "esbuild": "0.25.1",
