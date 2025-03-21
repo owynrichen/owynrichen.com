@@ -20,12 +20,12 @@ class Earth extends THREE.Group {
         console.log("loading earth...");
 
         const loader = new THREE.TextureLoader();
-        const mapTexP = loader.loadAsync('/theme/3d/8081_earthmap4k.jpg');
-        const bumpTexP = loader.loadAsync('/theme/3d/8081_earthbump4k.jpg');
-        const specTexP = loader.loadAsync('/theme/3d/8081_earthspec4k.png');
-        const mapNightTexP = loader.loadAsync('/theme/3d/8081_earthlights4k.jpg');
-        const emissiveMapTexP = loader.loadAsync('/theme/3d/8081_earthlights10k_mask.png');
-        const cloudTexP = loader.loadAsync('https://clouds.matteason.co.uk/images/4096x2048/clouds-alpha.png');
+        const mapTexP = loader.loadAsync('/theme/3d/8081_earthmap4k.webp');
+        const bumpTexP = loader.loadAsync('/theme/3d/8081_earthbump4k.webp');
+        const specTexP = loader.loadAsync('/theme/3d/8081_earthspec4k.webp');
+        const mapNightTexP = loader.loadAsync('/theme/3d/8081_earthlights4k.webp');
+        const emissiveMapTexP = loader.loadAsync('/theme/3d/8081_earthlights10k_mask.webp');
+        const cloudTexP = loader.loadAsync('https://clouds.matteason.co.uk/images/1024x512/clouds-alpha.png');
 
         const loadTexP = Promise.all([mapTexP, bumpTexP, specTexP, mapNightTexP, cloudTexP, emissiveMapTexP]);
         loadTexP.then(([mapTex, bumpTex, specTex, mapNightTex, cloudTex, emissiveMapTex]) => {
