@@ -5,13 +5,13 @@ import { Sun } from './Sun.js';
 import { Planes, Plane } from './Planes.js';
 import { Picker } from './Picker.js';
 import { TrackingCameraControls } from './TrackingCameraControls.js';
-import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
-import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
-import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
-import { FilmPass } from 'three/addons/postprocessing/FilmPass.js';
-import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
-import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
-import { FXAAShader } from 'three/addons/shaders/FXAAShader.js'
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
+import { FilmPass } from 'three/examples/jsm/postprocessing/FilmPass.js';
+import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js';
+import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
+import { FXAAShader } from 'three/examples/jsm/shaders/FXAAShader.js'
 import { gsap } from 'gsap';
 
 const fxaaPass = new ShaderPass(FXAAShader);

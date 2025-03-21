@@ -1,4 +1,16 @@
 {
+  "name": "owynrichen-preprocessing",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "bundle": "node buildscripts/bundle.js"
+  },
+  "dependencies": {
+    "esbuild": "0.25.1",
+    "esbuild-sass-plugin": "^3.3.1",
+    "gsap": "^3.12.7",
+    "three": "^0.174.0"
+  },
   "devDependencies": {
     "wrangler": "^3.95.0"
   }

@@ -77,8 +77,6 @@ Beyond basic interactions with systems like ChatGPT, CoPilot and Github CoPilot,
 LLMs into my day-to-day workflow, so after getting something semi-functional, I was noticing I had mixed (or poor)
 results.
 
-
-
 # References
 
 [AgentStack](https://docs.agentstack.sh/introduction)

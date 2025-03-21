@@ -384,14 +384,4 @@ architecture-beta
     worker_api:B --> T:opensky
 ~~~
 
-
-<script type="importmap">
-{
-    "imports": {
-        "three": "https://unpkg.com/three@0.171.0/build/three.module.js",
-        "three/addons/": "https://unpkg.com/three@0.171.0/examples/jsm/",
-        "gsap": "https://unpkg.com/gsap@3.12.5/all.js"
-    }
-}
-</script>
-<script type="module" src="/theme/js/main.js"></script>
+<script type="module" src="/theme/js/packed.js"></script>

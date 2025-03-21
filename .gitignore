@@ -35,3 +35,7 @@ node_modules/
 package-lock.json
 
 .wrangler/
+
+# bundled files
+/theme/static/css/min/
+/theme/static/js/packed.js*

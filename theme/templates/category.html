@@ -2,10 +2,6 @@
 
 {% block title %}{{ SITENAME|striptags }} - {{ category }} category{% endblock %}
 
-{% block extra_head %}
-        <link rel="stylesheet" type="text/css" href="{{ SITEURL }}/theme/css/list_page_styles.css" />
-{% endblock %}
-
 {% block content %}
     {% block content_title %}
         <h2>{{ category }}</h2>

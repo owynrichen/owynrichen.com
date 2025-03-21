@@ -1,3 +1,4 @@
+@import 'style.css';
 @import 'list_page_styles.css';
 
 #plane-container {
@@ -17,7 +18,7 @@
     left: 0;
     top: 0;
     z-index: 1;
-    border: none; 
+    border: none;
 }
 
 @keyframes scrollHomeContainer {
