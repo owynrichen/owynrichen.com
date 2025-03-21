@@ -15,24 +15,24 @@ await build({
         '.ttf': 'dataurl',
         '.svg': 'dataurl',
     },
-    plugins: [
-        sassPlugin({
-            type: 'style',
-            loadPaths: [`${import.meta.dirname}/node_modules`],
-            quietDeps: true,
-          }),
-        {
-            name: 'webfonts',
-            setup(build) {
-                build.onResolve({filter: /gstatic/}, args => {
-                console.log(args)
-                })
-                build.onLoad({filter: /gstatic/}, args => {
-                console.log(args)
-                })
-            }
-        }
-    ],
+    // plugins: [
+    //     sassPlugin({
+    //         type: 'style',
+    //         loadPaths: [`${import.meta.dirname}/node_modules`],
+    //         quietDeps: true,
+    //       }),
+    //     {
+    //         name: 'webfonts',
+    //         setup(build) {
+    //             build.onResolve({filter: /gstatic/}, args => {
+    //             console.log(args)
+    //             })
+    //             build.onLoad({filter: /gstatic/}, args => {
+    //             console.log(args)
+    //             })
+    //         }
+    //     }
+    // ],
     outfile: `${import.meta.dirname}/../theme/static/js/packed.js`,
 })
 
@@ -50,23 +50,23 @@ await build({
         '.ttf': 'dataurl',
         '.svg': 'dataurl',
     },
-    plugins: [
-        sassPlugin({
-            type: 'style',
-            loadPaths: [`${import.meta.dirname}/node_modules`],
-            quietDeps: true,
-          }),
-        {
-            name: 'webfonts',
-            setup(build) {
-                build.onResolve({filter: /gstatic/}, args => {
-                console.log(args)
-                })
-                build.onLoad({filter: /gstatic/}, args => {
-                console.log(args)
-                })
-            }
-        }
-    ],
+    // plugins: [
+    //     sassPlugin({
+    //         type: 'style',
+    //         loadPaths: [`${import.meta.dirname}/node_modules`],
+    //         quietDeps: true,
+    //       }),
+    //     {
+    //         name: 'webfonts',
+    //         setup(build) {
+    //             build.onResolve({filter: /gstatic/}, args => {
+    //             console.log(args)
+    //             })
+    //             build.onLoad({filter: /gstatic/}, args => {
+    //             console.log(args)
+    //             })
+    //         }
+    //     }
+    // ],
     outdir: `${import.meta.dirname}/../theme/static/css/min/`,
 })
