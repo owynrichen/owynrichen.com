@@ -29,7 +29,7 @@ let httpPlugin = {
     // handle the example import from unpkg.com but in reality this
     // would probably need to be more complex.
     build.onLoad({ filter: /.*/, namespace: 'http-url' }, async (args) => {
-      let contents = await new Promise((resolve, reject) => {
+      let [contents, loader] = await new Promise((resolve, reject) => {
         function fetch(url) {
           console.log(`Downloading: ${url}`)
           let lib = url.startsWith('https') ? https : http
@@ -39,8 +39,9 @@ let httpPlugin = {
               req.abort()
             } else if (res.statusCode === 200) {
               let chunks = []
+              let loader = url.match(/fonts.googleapi/) ? 'css' : url.match(/[ttf|woff|eot]|$/) ? 'binary' : 'js'
               res.on('data', chunk => chunks.push(chunk))
-              res.on('end', () => resolve(Buffer.concat(chunks)))
+              res.on('end', () => resolve([Buffer.concat(chunks), loader]))
             } else {
               reject(new Error(`GET ${url} failed: status ${res.statusCode}`))
             }
@@ -48,8 +49,7 @@ let httpPlugin = {
         }
         fetch(args.path)
       })
-
-      return { contents }
+      return { contents, loader }
     })
   },
 }
@@ -60,16 +60,7 @@ await build({
     bundle: true,
     format: 'esm',
     minify: true,
-    sourcemap: true,
-    loader: {
-        '.png': 'dataurl',
-        '.woff': 'dataurl',
-        '.woff2': 'dataurl',
-        '.eot': 'dataurl',
-        '.ttf': 'dataurl',
-        '.svg': 'dataurl',
-    },
-    // plugins: [ httpPlugin ],
+    metafile: true,
     outfile: `${import.meta.dirname}/../theme/static/js/packed.js`,
 })
 
@@ -80,13 +71,12 @@ await build({
     bundle: true,
     minify: true,
     loader: {
-        '.png': 'dataurl',
         '.woff': 'dataurl',
         '.woff2': 'dataurl',
         '.eot': 'dataurl',
         '.ttf': 'dataurl',
         '.svg': 'dataurl',
     },
-    // plugins: [ httpPlugin ],
+    plugins: [ httpPlugin ],
     outdir: `${import.meta.dirname}/../theme/static/css/min/`,
 })
