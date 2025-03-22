@@ -383,7 +383,7 @@ architecture-beta
     worker_api:R <--> L:kv_store
     worker_api:B --> T:opensky
 ~~~
-<script type="importmap">
+<!-- script type="importmap">
 {
     "imports": {
         "three": "https://unpkg.com/three@0.174.0/build/three.module.js",
@@ -391,5 +391,5 @@ architecture-beta
         "gsap": "https://unpkg.com/gsap@3.12.5/all.js"
     }
 }
-</script>
+</script -->
 <script type="module" src="/theme/js/packed.js" defer="true"></script>
