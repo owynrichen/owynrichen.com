@@ -14,14 +14,22 @@ Here's how to install the application dependencies:
 poetry install
 ```
 
-Here's how to build the website with the appropriate theme:
+Here's how to build the website with the bundling and appropriate theme:
 ```bash
-poetry run pelican content -t ./theme
+cd buildscripts
+./build.sh
 ```
 
 Here's how to run a local version of a server that will autoreload:
 ```bash
 poetry run pelican --autoreload --listen -t ./theme/
+```
+
+## Optimizing SVGs
+
+```bash
+svgo content/images/headIcon_forSite.svg -o content/images/headIcon_minimized.svg --multipass --precision 1 --pretty --config buildscripts/svgo.config.mjs
+svgo content/images/planetaryGears.svg -o content/images/planetaryGears_minimized.svg --multipass --precision 1 --pretty --config buildscripts/svgo.config.mjs
 ```
 
 ## Deploying

@@ -384,4 +384,4 @@ architecture-beta
     worker_api:B --> T:opensky
 ~~~
 
-<script type="module" src="/theme/js/packed.js"></script>
+<script type="module" src="/theme/js/packed.js" defer="true"></script>
