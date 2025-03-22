@@ -1,7 +1,8 @@
 {% extends "!simple/index.html" %}
 
 {% block extra_head %}
-        <link rel="stylesheet" type="text/css" href="{{ SITEURL }}/theme/css/min/index.css" />
+    <link rel="stylesheet" type="text/css" href="{{ SITEURL }}/theme/css/style.css" />
+     <link rel="stylesheet" type="text/css" href="{{ SITEURL }}/theme/css/index.css" />
 {% endblock %}
 
 {% block content %}
@@ -43,5 +44,14 @@
             <p>Altitude: <span id="plane-altitude"></span></p>
         </section>
     </div>
-    <script type="module" src="{{ SITEURL }}/theme/js/packed.js" defer="true"></script>
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.174.0/build/three.module.js",
+            "three/examples/jsm/": "https://unpkg.com/three@0.174.0/examples/jsm/",
+            "gsap": "https://unpkg.com/gsap@3.12.5/all.js"
+        }
+    }
+    </script>
+    <script type="module" src="{{ SITEURL }}/theme/js/main.js" defer="true"></script>
 {% endblock %}

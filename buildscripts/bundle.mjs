@@ -39,7 +39,7 @@ let httpPlugin = {
               req.abort()
             } else if (res.statusCode === 200) {
               let chunks = []
-              let loader = url.match(/fonts.googleapi/) ? 'css' : url.match(/[ttf|woff|eot]|$/) ? 'binary' : 'js'
+              let loader = url.match(/fonts.googleapi/) ? 'css' : url.match(/[ttf|woff|eot]|$/) ? 'dataurl' : 'js'
               res.on('data', chunk => chunks.push(chunk))
               res.on('end', () => resolve([Buffer.concat(chunks), loader]))
             } else {
